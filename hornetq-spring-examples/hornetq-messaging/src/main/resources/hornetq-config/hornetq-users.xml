@@ -1,0 +1,13 @@
+<configuration xmlns="urn:hornetq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:hornetq /schema/hornetq-users.xsd">
+
+    <defaultuser name="guest" password="guest">
+      <role name="guest"/>
+   </defaultuser>
+
+   <user name="offersvc" password="shopzilla">
+     <role name="user"/>
+  </user>
+
+
+</configuration>
