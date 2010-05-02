@@ -6,17 +6,14 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import javax.annotation.PostConstruct;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
+import javax.jms.*;
 
 /**
  * This class will wake up on context start, run through a series of messages with the same key, and then send an alternative. We should be able to witness only 2 (unique) messages in the queue.
  *
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
-public class DuplicateMessageProducer {
+public class DuplicateMessageProducer implements MessageListener {
 
     @Autowired
     private volatile JmsTemplate jmsTemplate;
@@ -46,8 +43,9 @@ public class DuplicateMessageProducer {
         System.out.println(String.format("Sending message with hash: %s ", hash));
     }
 
-    public void receive(Object msg) throws Throwable {
-        System.out.println("Received message " + msg);
+    public void onMessage(final Message message) {
+        TextMessage textMessage = (TextMessage) message;
+        System.out.println("Received message " + textMessage.toString());
     }
 
     public static void main(String[] args) throws Throwable {

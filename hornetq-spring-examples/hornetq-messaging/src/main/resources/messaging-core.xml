@@ -17,9 +17,9 @@
     <context:annotation-config/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-        p:location="classpath:messaging-context.properties"
-        p:ignoreUnresolvablePlaceholders="true"
-    />
+          p:location="classpath:messaging-context.properties"
+          p:ignoreUnresolvablePlaceholders="true"
+            />
 
     <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="jmsUserCredentialsConnectionFactory"
@@ -28,8 +28,6 @@
 
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
           p:connectionFactory-ref="jmsConnectionFactory"
-          p:deliveryPersistent="true"
-          p:sessionTransacted="true"
             />
 
     <bean id="transactionManager" class="org.springframework.jms.connection.JmsTransactionManager"
@@ -52,7 +50,7 @@
                         </constructor-arg>
                     </bean>
                 </constructor-arg>
-                <constructor-arg>
+                <!--<constructor-arg>
                     <bean class="org.hornetq.api.core.TransportConfiguration">
                         <constructor-arg value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
                         <constructor-arg>
@@ -62,9 +60,9 @@
                             </map>
                         </constructor-arg>
                     </bean>
-                </constructor-arg>
-                <property name="failoverOnServerShutdown" value="true"/>
-                <property name="reconnectAttempts" value="0"/>
+                </constructor-arg>-->
+                <!--<property name="failoverOnServerShutdown" value="true"/>-->
+                <property name="reconnectAttempts" value="5"/>
             </bean>
         </property>
     </bean>
