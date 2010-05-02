@@ -18,14 +18,14 @@ import javax.jms.TextMessage;
  */
 public class DuplicateMessageProducer {
 
+    @Autowired
+    private volatile JmsTemplate jmsTemplate;
+
     private String destination;
 
     public void setDestination(final String dn) {
         this.destination = dn;
     }
-
-    @Autowired
-    private volatile JmsTemplate jmsTemplate;
 
     @PostConstruct
     public void start() throws Throwable {
