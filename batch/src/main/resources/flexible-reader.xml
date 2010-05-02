@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:p="http://www.springframework.org/schema/p"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+                http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.0.xsd
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+		        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+		        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <context:annotation-config/>
+
+    <beans:import resource="batch-core.xml"/>
+<!--
+    <bean id="org.h2.tools.Server"
+          class="org.h2.tools.Server"
+          factory-method="createTcpServer"
+          init-method="start"
+          destroy-method="stop">
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:value>-tcp</beans:value>
+                <beans:value>-tcpAllowOthers</beans:value>
+                <beans:value>true</beans:value>
+                <beans:value>-tcpPort</beans:value>
+                <beans:value>#{systemProperties['batch.dataSource.port']}</beans:value>
+            </beans:list>
+        </beans:constructor-arg>
+    </bean>-->
+
+
+    <beans:bean id="flexibleReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step"
+                p:resource="file://#{jobParameters['file']}">
+        <beans:property name="lineMapper">
+            <beans:bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <beans:property name="lineTokenizer">
+                    <beans:bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer"
+                                p:delimiter="#{jobParameters['delimiter']}"
+                                p:names="#{jobParameters['columnNames']}"
+                            />
+                </beans:property>
+                <beans:property name="fieldSetMapper">
+                    <beans:bean class="com.joshlong.springbatch.starter.FlexibleFieldSetMapper"/>
+                </beans:property>
+            </beans:bean>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="myCustomItemWriter" class="com.joshlong.springbatch.starter.MyCustomItemWriter" scope="step"
+                p:delimiter="#{jobParameters['delimiter']}"
+                p:names="#{jobParameters['columnNames']}"
+            />
+
+    <job job-repository="jobRepository" restartable="true" id="jobProcessor">
+        <step id="pending">
+            <tasklet>
+                <chunk reader="flexibleReader" writer="myCustomItemWriter" commit-interval="100"/>
+            </tasklet>
+        </step>
+    </job>
+
+    <beans:bean id="FlexibleFileProcessor" class="com.joshlong.springbatch.starter.FlexibleFileProcessor"
+                p:job-ref="jobProcessor" p:jobLauncher-ref="jobLauncher"/>
+
+
+</beans:beans>

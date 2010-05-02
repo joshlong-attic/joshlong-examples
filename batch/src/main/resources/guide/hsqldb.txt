@@ -1,0 +1,8 @@
+- Download HSQLDB 1.8.02
+- Go into the lib folder
+- Run: java -cp hsqldb.jar org.hsqldb.Server -database.0 file:springbatchstarterdb -dbname.0 springbatchstarterdb
+- To use the HSQL Database Manager: java -cp hsqldb.jar org.hsqldb.util.DatabaseManager
+- In the Connect window, enter:   jdbc:hsqldb:hsql://localhost/springbatchstarter for the URL, and SA for both the user and nothing (leave it blank) for the password.
+
+
+

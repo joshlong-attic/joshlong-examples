@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns:ehcache="http://www.springmodules.org/schema/ehcache"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd http://www.springmodules.org/schema/ehcache http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd "> <!-- this information has proven invaluable: http://ourcraft.wordpress.com/tag/bitronix/ -->
+
+
+    <aop:aspectj-autoproxy/>
+    <context:annotation-config/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:service-context.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+   <!-- <bean id="org.h2.tools.Server"
+          class="org.h2.tools.Server"
+          factory-method="createTcpServer"
+          init-method="start"
+          destroy-method="stop">
+        <constructor-arg>
+            <list>
+                <value>-tcp</value>
+                <value>-tcpAllowOthers</value>
+                <value>true</value>
+                <value>-tcpPort</value>
+                <value>${batch.dataSource.port}</value>
+            </list>
+        </constructor-arg>
+    </bean>-->
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          p:driverClass="${batch.dataSource.driverClassName}"
+          p:maxPoolSize="4" p:minPoolSize="2" p:acquireIncrement="1"
+          p:user="${batch.dataSource.username}"
+          p:password="${batch.dataSource.password}"
+          p:jdbcUrl="${batch.dataSource.url}"
+    />
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource" p:nestedTransactionAllowed="true"/>
+
+</beans>
