@@ -3,7 +3,6 @@ package com.joshlong.hornetq.examples.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -25,8 +24,7 @@ public class Browser {
         this.destination = destination;
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void browse() throws Throwable {
+    public void browse() throws JMSException {
 
         int count = this.jmsTemplate.browse(this.destination, new BrowserCallback<Integer>() {
             public Integer doInJms(final Session session, final QueueBrowser browser) throws JMSException {
@@ -34,14 +32,14 @@ public class Browser {
                 int counter = 0;
                 while (enumeration.hasMoreElements()) {
                     Message msg = (Message) enumeration.nextElement();
-                    System.out.println(String.format("Found : %s", msg));
+                    System.out.println(String.format("\tFound : %s", msg));
                     counter += 1;
                 }
                 return counter;
             }
         });
 
-        System.out.println(String.format("There are %s messages", count));
+        System.out.println(String.format("\tThere are %s messages", count));
 
     }
 }

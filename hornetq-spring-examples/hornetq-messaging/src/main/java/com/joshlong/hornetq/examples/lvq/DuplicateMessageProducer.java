@@ -49,7 +49,7 @@ public class DuplicateMessageProducer implements MessageListener {
     }
 
     public static void main(String[] args) throws Throwable {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("examples-lvq.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("lvq/examples-lvq.xml");
         ctx.start();
     }
 }

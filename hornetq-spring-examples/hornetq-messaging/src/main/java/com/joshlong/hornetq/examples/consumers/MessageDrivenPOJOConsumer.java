@@ -1,6 +1,6 @@
 package com.joshlong.hornetq.examples.consumers;
 
-import javax.jms.TextMessage;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * A simple MDP (Message-Driven POJOs, as opposed to Message Driven Beans from JEE). The MDP is configured using Spring and the jms: namespace support.
@@ -9,7 +9,13 @@ import javax.jms.TextMessage;
  */
 public class MessageDrivenPOJOConsumer {
 
-    public void announceReceiptOfMessage(TextMessage txtMsg) throws Throwable {
-        System.out.println("Received the message: " + txtMsg.getText());
+    public void handleMessage(String message) throws Throwable {
+        System.out.println("Received the message: " + message.toString());
+    }
+
+    public static void main(String[] args) throws Throwable {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("consumers/jms-mlc-adapter-mdp.xml");
+        classPathXmlApplicationContext.start();
+
     }
 }

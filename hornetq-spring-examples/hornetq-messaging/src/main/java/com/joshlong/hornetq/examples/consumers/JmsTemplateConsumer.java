@@ -1,6 +1,7 @@
 package com.joshlong.hornetq.examples.consumers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.annotation.PostConstruct;
@@ -29,4 +30,8 @@ public class JmsTemplateConsumer {
         }
     }
 
+    public static void main(String[] args) throws Throwable {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("consumers/jms-template-receiver.xml");
+        classPathXmlApplicationContext.start();
+    }
 }
