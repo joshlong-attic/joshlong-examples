@@ -5,7 +5,7 @@
         <role name="guest"/>
     </defaultuser>
 
-    <user name="offersvc" password="shopzilla">
+    <user name="u" password="p">
         <role name="user"/>
     </user>
 

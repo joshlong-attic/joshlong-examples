@@ -16,11 +16,7 @@
         <entry name="/queue/dupesQueue"/>
         <durable>true</durable>
     </queue>
-
-    <queue name="staleMerchantsQueue">
-        <entry name="/queue/staleMerchantsQueue"/>
-        <durable>true</durable>
-    </queue>
+ 
 
     <queue name="DLQ">
         <entry name="/queue/DLQ"/>
