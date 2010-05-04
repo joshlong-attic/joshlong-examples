@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:hornetq="http://www.joshlong.com/schema/spring/messaging/hornetq"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.joshlong.com/schema/spring/messaging/hornetq http://www.joshlong.com/schema/spring/messaging/hornetq/joshlong-hornetq-1.0.xsd
+        ">
+
+       <bean class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
+               p:password="password" p:username="user" >
+           <property name="targetConnectionFactory">
+               <hornetq:connection-factory  host="localhost" port="5455" backup-host="localhost"
+                        backup-port="5455" failover-on-server-shutdown="true" reconnect-attempts="0" />
+           </property>
+       </bean>
+
+
+    
+
+<!--
+
+
+  <bean id="jmsUserCredentialsConnectionFactory"
+        class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+    <property name="targetConnectionFactory">
+      <bean class="org.hornetq.jms.client.HornetQConnectionFactory">
+        <constructor-arg>
+          <bean class="org.hornetq.api.core.TransportConfiguration">
+            <constructor-arg
+              value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
+            <constructor-arg>
+              <map key-type="java.lang.String" value-type="java.lang.Object">
+                <entry key="host" value="${JMS_SERVER_HOST}"/>
+                <entry key="port" value="${JMS_SERVER_PORT}"/>
+              </map>
+            </constructor-arg>
+          </bean>
+        </constructor-arg>
+        <constructor-arg>
+          <bean class="org.hornetq.api.core.TransportConfiguration">
+            <constructor-arg
+              value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
+            <constructor-arg>
+              <map key-type="java.lang.String" value-type="java.lang.Object">
+                <entry key="host" value="${JMS_SERVER_BACKUP_HOST}"/>
+                <entry key="port" value="${JMS_SERVER_BACKUP_PORT}"/>
+              </map>
+            </constructor-arg>
+          </bean>
+        </constructor-arg>
+        <property name="failoverOnServerShutdown" value="true"/>
+        <property name="reconnectAttempts" value="0"/>
+      </bean>
+
+    </property>
+    <property name="username" value="${JMS_SERVER_USERNAME}"/>
+    <property name="password" value="${JMS_SERVER_PASSWORD}"/>
+  </bean>-->
+
+
+
+</beans>
