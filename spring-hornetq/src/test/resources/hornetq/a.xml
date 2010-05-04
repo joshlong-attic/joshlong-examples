@@ -15,57 +15,61 @@
         http://www.joshlong.com/schema/spring/messaging/hornetq http://www.joshlong.com/schema/spring/messaging/hornetq/joshlong-hornetq-1.0.xsd
         ">
 
-       <bean class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
-               p:password="password" p:username="user" >
-           <property name="targetConnectionFactory">
-               <hornetq:connection-factory  host="localhost" port="5455" backup-host="localhost"
-                        backup-port="5455" failover-on-server-shutdown="true" reconnect-attempts="0" />
-           </property>
-       </bean>
+    <hornetq:connection-factory
+        id="cf"
+        host="localhost" port="5455"
+        backup-host="localhost" backup-port="5455"
+        failover-on-server-shutdown="true" reconnect-attempts="0"
+    />
+
+    <bean 
+        id="connectionFactory"
+        class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
+        p:password="password"
+        p:username="user"
+        p:targetConnectionFactory-ref="cf"
+    />
 
 
-    
-
-<!--
+    <!--
 
 
-  <bean id="jmsUserCredentialsConnectionFactory"
-        class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
-    <property name="targetConnectionFactory">
-      <bean class="org.hornetq.jms.client.HornetQConnectionFactory">
-        <constructor-arg>
-          <bean class="org.hornetq.api.core.TransportConfiguration">
-            <constructor-arg
-              value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
-            <constructor-arg>
-              <map key-type="java.lang.String" value-type="java.lang.Object">
-                <entry key="host" value="${JMS_SERVER_HOST}"/>
-                <entry key="port" value="${JMS_SERVER_PORT}"/>
-              </map>
-            </constructor-arg>
-          </bean>
-        </constructor-arg>
-        <constructor-arg>
-          <bean class="org.hornetq.api.core.TransportConfiguration">
-            <constructor-arg
-              value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
-            <constructor-arg>
-              <map key-type="java.lang.String" value-type="java.lang.Object">
-                <entry key="host" value="${JMS_SERVER_BACKUP_HOST}"/>
-                <entry key="port" value="${JMS_SERVER_BACKUP_PORT}"/>
-              </map>
-            </constructor-arg>
-          </bean>
-        </constructor-arg>
-        <property name="failoverOnServerShutdown" value="true"/>
-        <property name="reconnectAttempts" value="0"/>
-      </bean>
+    <bean id="jmsUserCredentialsConnectionFactory"
+          class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+      <property name="targetConnectionFactory">
+        <bean class="org.hornetq.jms.client.HornetQConnectionFactory">
+          <constructor-arg>
+            <bean class="org.hornetq.api.core.TransportConfiguration">
+              <constructor-arg
+                value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
+              <constructor-arg>
+                <map key-type="java.lang.String" value-type="java.lang.Object">
+                  <entry key="host" value="${JMS_SERVER_HOST}"/>
+                  <entry key="port" value="${JMS_SERVER_PORT}"/>
+                </map>
+              </constructor-arg>
+            </bean>
+          </constructor-arg>
+          <constructor-arg>
+            <bean class="org.hornetq.api.core.TransportConfiguration">
+              <constructor-arg
+                value="org.hornetq.integration.transports.netty.NettyConnectorFactory"/>
+              <constructor-arg>
+                <map key-type="java.lang.String" value-type="java.lang.Object">
+                  <entry key="host" value="${JMS_SERVER_BACKUP_HOST}"/>
+                  <entry key="port" value="${JMS_SERVER_BACKUP_PORT}"/>
+                </map>
+              </constructor-arg>
+            </bean>
+          </constructor-arg>
+          <property name="failoverOnServerShutdown" value="true"/>
+          <property name="reconnectAttempts" value="0"/>
+        </bean>
 
-    </property>
-    <property name="username" value="${JMS_SERVER_USERNAME}"/>
-    <property name="password" value="${JMS_SERVER_PASSWORD}"/>
-  </bean>-->
-
+      </property>
+      <property name="username" value="${JMS_SERVER_USERNAME}"/>
+      <property name="password" value="${JMS_SERVER_PASSWORD}"/>
+    </bean>-->
 
 
 </beans>
