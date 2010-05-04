@@ -67,13 +67,6 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();     
-
-
-    }
-
-    @Override
     public Class<?> getObjectType() {
         return HornetQConnectionFactory.class;
     }
