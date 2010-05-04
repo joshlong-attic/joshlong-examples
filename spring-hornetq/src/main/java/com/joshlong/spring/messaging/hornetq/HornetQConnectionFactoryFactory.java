@@ -14,6 +14,10 @@ import java.util.Map;
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
 public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQConnectionFactory>   {
+
+    // default port is 5445
+    // default host is localhost 
+
     private String host = null;
     private String backupHost = null;
     private int port = -1;
