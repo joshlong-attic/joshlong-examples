@@ -6,9 +6,7 @@ import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
- *
- * This class was stolen largely from {@link org.springframework.integration.config.xml.IntegrationNamespaceUtils} from the Spring Integration project:
- * it's useful, but we can't risk having a forced dependency on it ATM.
+ * This class was stolen largely from {@link org.springframework.integration.config.xml.IntegrationNamespaceUtils} from the Spring Integration project: it's useful, but we can't risk having a forced dependency on it ATM.
  *
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
@@ -31,8 +29,8 @@ public class JoshLongNamespaceUtils {
     }
 
     /**
-     * Populates the bean definition property corresponding to the specified attributeName with the value of that attribute if it is defined in the given element.
-     * <p>The property name will be the camel-case equivalent of the lower case hyphen separated attribute (e.g. the "foo-bar" attribute would match the "fooBar" property).
+     * Populates the bean definition property corresponding to the specified attributeName with the value of that attribute if it is defined in the given element. <p>The property name will be the camel-case equivalent of the lower case hyphen separated attribute (e.g. the "foo-bar" attribute would
+     * match the "fooBar" property).
      *
      * @param beanDefinitionBuilder - the bean definition to be configured
      * @param element               - the XML element where the attribute should be defined
@@ -63,12 +61,12 @@ public class JoshLongNamespaceUtils {
     }
 
     /**
-     * Populates the bean definition property corresponding to the specified attributeName with the reference to a bean identified by the value of that attribute if the attribute is defined in the given element.
-     * <p>The property name will be the camel-case equivalent of the lower case hyphen separated attribute (e.g. the "foo-bar" attribute would match the "fooBar" property).
+     * Populates the bean definition property corresponding to the specified attributeName with the reference to a bean identified by the value of that attribute if the attribute is defined in the given element. <p>The property name will be the camel-case equivalent of the lower case hyphen
+     * separated attribute (e.g. the "foo-bar" attribute would match the "fooBar" property).
      *
-     * @param builder - the bean definition to be configured
-     * @param element        - the XML element where the attribute should be defined
-     * @param attributeName  - the name of the attribute whose value will be used as a bean reference to populate the property
+     * @param builder       - the bean definition to be configured
+     * @param element       - the XML element where the attribute should be defined
+     * @param attributeName - the name of the attribute whose value will be used as a bean reference to populate the property
      *
      * @see Conventions#attributeNameToPropertyName(String)
      * @see Conventions#attributeNameToPropertyName(String)

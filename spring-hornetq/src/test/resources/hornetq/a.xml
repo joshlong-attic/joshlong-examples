@@ -16,19 +16,19 @@
         ">
 
     <hornetq:connection-factory
-        id="cf"
-        host="localhost" port="5455"
-        backup-host="localhost" backup-port="5455"
-        failover-on-server-shutdown="true" reconnect-attempts="0"
-    />
+            id="cf"
+            host="localhost" port="5455"
+            backup-host="localhost" backup-port="5455"
+            failover-on-server-shutdown="true" reconnect-attempts="0"
+            />
 
-    <bean 
-        id="connectionFactory"
-        class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
-        p:password="password"
-        p:username="user"
-        p:targetConnectionFactory-ref="cf"
-    />
+    <bean
+            id="connectionFactory"
+            class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
+            p:password="password"
+            p:username="user"
+            p:targetConnectionFactory-ref="cf"
+            />
 
 
     <!--

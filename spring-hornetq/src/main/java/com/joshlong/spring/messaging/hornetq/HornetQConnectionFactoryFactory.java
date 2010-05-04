@@ -10,18 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * This builds a {@link org.hornetq.jms.client.HornetQConnectionFactory} to handle connections to a HornetQ broker. 
+ * This builds a {@link org.hornetq.jms.client.HornetQConnectionFactory} to handle connections to a HornetQ broker.
  *
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
-public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQConnectionFactory>   {
+public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQConnectionFactory> {
 
     private String host = "localhost", backupHost = "localhost";
-    private int port =  5455 , backupPort = 5455 ;
+    private int port = 5455, backupPort = 5455;
     private boolean failoverOnServerShutdown = true;
     private int reconnectAttempts = 0;
-
 
     /**
      * Builds a {@link org.hornetq.api.core.TransportConfiguration}
@@ -29,7 +27,7 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
      * @param host the host of the server
      * @param port the port of the server
      *
-     * @return     a {@link org.hornetq.api.core.TransportConfiguration} that can be used to vend a {@link org.hornetq.jms.client.HornetQConnectionFactory}
+     * @return a {@link org.hornetq.api.core.TransportConfiguration} that can be used to vend a {@link org.hornetq.jms.client.HornetQConnectionFactory}
      *
      * @throws Exception thrown if anything out of the ordinary should trespass
      */
@@ -42,7 +40,7 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
         Map<String, Object> parms = new HashMap<String, Object>();
         parms.put("host", host);
         parms.put("port", port);
-        return new TransportConfiguration( NettyConnectorFactory.class.getName(), parms);
+        return new TransportConfiguration(NettyConnectorFactory.class.getName(), parms);
     }
 
     private HornetQConnectionFactory factoryHornetQConnectionFactory() throws Exception {
@@ -66,22 +64,23 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
 
         if (null != conn) {
             conn.setFailoverOnServerShutdown(this.failoverOnServerShutdown);
-            conn.setReconnectAttempts( this.reconnectAttempts );
+            conn.setReconnectAttempts(this.reconnectAttempts);
         }
         return conn;
     }
 
     @Override
     public Class<?> getObjectType() {
-     return HornetQConnectionFactory.class ;
+        return HornetQConnectionFactory.class;
     }
 
     @Override
     protected HornetQConnectionFactory createInstance() throws Exception {
-      return this.factoryHornetQConnectionFactory();
+        return this.factoryHornetQConnectionFactory();
     }
 
     // properties 
+
     public void setHost(final String host) {
         this.host = host;
     }
