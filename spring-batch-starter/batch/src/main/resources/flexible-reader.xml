@@ -19,23 +19,6 @@
     <context:annotation-config/>
 
     <beans:import resource="batch-core.xml"/>
-<!--
-    <bean id="org.h2.tools.Server"
-          class="org.h2.tools.Server"
-          factory-method="createTcpServer"
-          init-method="start"
-          destroy-method="stop">
-        <beans:constructor-arg>
-            <beans:list>
-                <beans:value>-tcp</beans:value>
-                <beans:value>-tcpAllowOthers</beans:value>
-                <beans:value>true</beans:value>
-                <beans:value>-tcpPort</beans:value>
-                <beans:value>#{systemProperties['batch.dataSource.port']}</beans:value>
-            </beans:list>
-        </beans:constructor-arg>
-    </bean>-->
-
 
     <beans:bean id="flexibleReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step"
                 p:resource="file://#{jobParameters['file']}">

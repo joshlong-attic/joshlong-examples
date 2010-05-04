@@ -13,24 +13,17 @@
 		        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 		        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <aop:aspectj-autoproxy/>
-    <context:annotation-config/>
+  <beans:import resource="datasource-context.xml"/>
+  <aop:aspectj-autoproxy/>
+  <context:annotation-config/>
 
+  <beans:bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" p:jobRepository-ref="jobRepository"/>
 
-    <beans:import resource="datasource-context.xml"/>
+  <beans:bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor" p:jobRegistry-ref="jobRegistry"/>
 
-    <beans:bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-        <beans:property name="jobRepository" ref="jobRepository"/>
-    </beans:bean>
+  <beans:bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean" p:dataSource-ref="dataSource" p:transactionManager-ref="transactionManager"/>
 
-    <beans:bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor">
-        <beans:property name="jobRegistry" ref="jobRegistry"/>
-    </beans:bean>
-
-    <beans:bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"
-                p:dataSource-ref="dataSource" p:transactionManager-ref="transactionManager"/>
-
-    <beans:bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry"/>
+  <beans:bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry"/>
 
 
 </beans:beans>

@@ -18,22 +18,6 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
-   <!-- <bean id="org.h2.tools.Server"
-          class="org.h2.tools.Server"
-          factory-method="createTcpServer"
-          init-method="start"
-          destroy-method="stop">
-        <constructor-arg>
-            <list>
-                <value>-tcp</value>
-                <value>-tcpAllowOthers</value>
-                <value>true</value>
-                <value>-tcpPort</value>
-                <value>${batch.dataSource.port}</value>
-            </list>
-        </constructor-arg>
-    </bean>-->
-
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           p:driverClass="${batch.dataSource.driverClassName}"
           p:maxPoolSize="4" p:minPoolSize="2" p:acquireIncrement="1"
