@@ -2,7 +2,6 @@ package com.joshlong.spring.messaging.hornetq;
 
 import org.apache.commons.lang.StringUtils;
 import org.hornetq.api.core.TransportConfiguration;
-import org.hornetq.integration.transports.netty.NettyConnectorFactory;
 import org.hornetq.jms.client.HornetQConnectionFactory;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
@@ -14,10 +13,11 @@ import java.util.Map;
  *
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
-public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQConnectionFactory> {
-
-    private String host = "localhost", backupHost = "localhost";
-    private int port = 5455, backupPort = 5455;
+public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQConnectionFactory>   {
+    private String host = null;
+    private String backupHost = null;
+    private int port = -1;
+    private int backupPort = -1;
     private boolean failoverOnServerShutdown = true;
     private int reconnectAttempts = 0;
 
@@ -31,42 +31,42 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
      *
      * @throws Exception thrown if anything out of the ordinary should trespass
      */
-    private TransportConfiguration factoryTransportConfiguration(String host, int port) throws Exception {
-
-        if (StringUtils.isEmpty(host) || port < 1) {
+    private TransportConfiguration factoryTransportConfiguration(String host, int port)
+            throws Exception {
+        if (StringUtils.isEmpty(host) || (port < 1)) {
             return null;
         }
 
         Map<String, Object> parms = new HashMap<String, Object>();
         parms.put("host", host);
         parms.put("port", port);
-        return new TransportConfiguration(NettyConnectorFactory.class.getName(), parms);
+
+        return new TransportConfiguration("org.hornetq.integration.transports.netty.NettyConnectorFactory", parms);
     }
 
-    private HornetQConnectionFactory factoryHornetQConnectionFactory() throws Exception {
-
+    private HornetQConnectionFactory factoryHornetQConnectionFactory()
+            throws Exception {
         TransportConfiguration main = factoryTransportConfiguration(this.host, this.port);
         TransportConfiguration backup = factoryTransportConfiguration(this.backupHost, this.backupPort);
 
-        HornetQConnectionFactory conn = null;
+        HornetQConnectionFactory conn;
 
-        if (main == null && backup == null) {
+        if (main == null) {
             throw new RuntimeException("both the configuration for the main and backup servers are null! You must specify at least 'host' and 'port'");
         }
 
-        if (main != null && backup != null) {
-            conn = new HornetQConnectionFactory(main, backup);
-        }
+        conn = (backup == null) ? new HornetQConnectionFactory(main) : new HornetQConnectionFactory(main, backup);
+        conn.setFailoverOnServerShutdown(this.failoverOnServerShutdown);
+        conn.setReconnectAttempts(this.reconnectAttempts);
 
-        if (main != null && backup == null) {
-            conn = new HornetQConnectionFactory(main);
-        }
-
-        if (null != conn) {
-            conn.setFailoverOnServerShutdown(this.failoverOnServerShutdown);
-            conn.setReconnectAttempts(this.reconnectAttempts);
-        }
         return conn;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.afterPropertiesSet();     
+
+
     }
 
     @Override
@@ -75,7 +75,8 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
     }
 
     @Override
-    protected HornetQConnectionFactory createInstance() throws Exception {
+    protected HornetQConnectionFactory createInstance()
+            throws Exception {
         return this.factoryHornetQConnectionFactory();
     }
 
@@ -104,4 +105,6 @@ public class HornetQConnectionFactoryFactory extends AbstractFactoryBean<HornetQ
     public void setReconnectAttempts(final int reconnectAttempts) {
         this.reconnectAttempts = reconnectAttempts;
     }
+
+
 }

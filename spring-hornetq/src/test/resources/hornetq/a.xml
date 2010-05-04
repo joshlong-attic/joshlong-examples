@@ -15,24 +15,19 @@
         http://www.joshlong.com/schema/spring/messaging/hornetq http://www.joshlong.com/schema/spring/messaging/hornetq/joshlong-hornetq-1.0.xsd
         ">
 
-    <hornetq:connection-factory
-            id="cf"
-            host="localhost" port="5455"
-            backup-host="localhost" backup-port="5455"
-            failover-on-server-shutdown="true" reconnect-attempts="0"
-            />
+    <context:component-scan base-package="com.joshlong.spring.messaging.hornetq"/>
 
-    <bean
-            id="connectionFactory"
-            class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
-            p:password="password"
-            p:username="user"
-            p:targetConnectionFactory-ref="cf"
-            />
+    <bean class="org.springframework.jms.core.JmsTemplate" p:connectionFactory-ref="connectionFactory"/>
 
+    <bean id="connectionFactory" class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter" p:password="password" p:username="user">
+        <property name="targetConnectionFactory">
+            <hornetq:connection-factory host="localhost" port="5445" failover-on-server-shutdown="false" reconnect-attempts="0"/>
+        </property>
+    </bean>
 
     <!--
 
+    TODO this is how it would get done <em> otherwise</em>
 
     <bean id="jmsUserCredentialsConnectionFactory"
           class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
