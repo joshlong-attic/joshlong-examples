@@ -1,6 +1,7 @@
 package com.joshlong.springbatch.starter;
 
 import org.apache.commons.lang.SystemUtils;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

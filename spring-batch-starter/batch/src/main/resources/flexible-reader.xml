@@ -20,7 +20,7 @@
 
     <beans:import resource="batch-core.xml"/>
 
-    <beans:bean id="flexibleReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step"
+    <beans:bean id="flexibleReader" class="org.springframework.batch.item.file.FlatFileItemReader"  scope="step"
                 p:resource="file://#{jobParameters['file']}">
         <beans:property name="lineMapper">
             <beans:bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -37,7 +37,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="myCustomItemWriter" class="com.joshlong.springbatch.starter.MyCustomItemWriter" scope="step"
+    <beans:bean id="myCustomItemWriter" class="com.joshlong.springbatch.starter.MyCustomItemWriter"  scope="step"
                 p:delimiter="#{jobParameters['delimiter']}"
                 p:names="#{jobParameters['columnNames']}"
             />

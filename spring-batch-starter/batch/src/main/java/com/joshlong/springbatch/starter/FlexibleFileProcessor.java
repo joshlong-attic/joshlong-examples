@@ -26,7 +26,7 @@ public class FlexibleFileProcessor {
         Map<String, JobParameter> parameterMap = new HashMap<String, JobParameter>();
 
         parameterMap.put("file", new JobParameter(fileBatchProcessContext.getFile().getAbsolutePath()));
-        parameterMap.put("delimiter", new JobParameter(Character.toString(fileBatchProcessContext.getDelimer())));
+        parameterMap.put("delimiter", new JobParameter(Character.toString(fileBatchProcessContext.getDelimiter())));
         parameterMap.put("timestamp", new JobParameter(fileBatchProcessContext.getDate().getTime()));
         parameterMap.put("columnNames", new JobParameter(StringUtils.join(fileBatchProcessContext.getColumnNames(),
                                                                           ",")));

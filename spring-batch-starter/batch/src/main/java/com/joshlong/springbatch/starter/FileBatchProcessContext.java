@@ -16,12 +16,12 @@ import java.util.Date;
  */
 public class FileBatchProcessContext implements Serializable {
     private volatile String[] columnNames;
-    private volatile char delimer;
+    private volatile char delimiter;
     private volatile Date date;
     private volatile File file;
 
     public FileBatchProcessContext(File file, char delimiter, String[] colNames, Date date) {
-        this.delimer = delimiter;
+        this.delimiter = delimiter;
         this.file = file;
         this.columnNames = colNames;
         this.date = date;
@@ -55,12 +55,12 @@ public class FileBatchProcessContext implements Serializable {
         this.columnNames = columnNames;
     }
 
-    public char getDelimer() {
-        return delimer;
+    public char getDelimiter() {
+        return delimiter;
     }
 
-    public void setDelimer(final char delimer) {
-        this.delimer = delimer;
+    public void setDelimiter(char delimiter) {
+        this.delimiter = delimiter;
     }
 
     @Override
