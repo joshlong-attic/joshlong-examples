@@ -1,0 +1,22 @@
+#!/bin/sh
+
+export HORNETQ_HOME=..
+mkdir -p ../logs
+# By default, the server is started in the non-clustered standalone configuration
+
+CONFIG_DIR=$HORNETQ_HOME/config/stand-alone/h$1;  
+FILENAME=hornetq-beans.xml;  
+
+export CLASSPATH=$CONFIG_DIR:$HORNETQ_HOME/schemas/
+export CLUSTER_PROPS="-Djnp.port=109$1 -Djnp.rmiPort=109$1 -Djnp.host=localhost -Dhornetq.remoting.netty.host=localhost -Dhornetq.data.root=data$1 -Dhornetq.remoting.netty.port=544$1"
+export JVM_ARGS="$CLUSTER_PROPS -XX:+UseParallelGC -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -Xms512M -Xmx1024M -Dhornetq.config.dir=$CONFIG_DIR -Djava.util.logging.config.file=$CONFIG_DIR/logging.properties -Djava.library.path=."
+#export JVM_ARGS="-Xmx512M -Djava.util.logging.config.file=$CONFIG_DIR/logging.properties -Dhornetq.config.dir=$CONFIG_DIR -Djava.library.path=. -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+
+for i in `ls $HORNETQ_HOME/lib/*.jar`; do
+	CLASSPATH=$i:$CLASSPATH
+done
+
+echo "***********************************************************************************"
+echo "java $JVM_ARGS -classpath $CLASSPATH org.hornetq.integration.bootstrap.HornetQBootstrapServer $FILENAME"
+echo "***********************************************************************************"
+java $JVM_ARGS -classpath $CLASSPATH -Dcom.sun.management.jmxremote org.hornetq.integration.bootstrap.HornetQBootstrapServer $FILENAME

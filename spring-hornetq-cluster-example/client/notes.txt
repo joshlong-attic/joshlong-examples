@@ -1,0 +1,4 @@
+Notes on POJO sends:
+ I'm able to send 400k ObjectMessages in about 120s with 2 producer threads and 4 nodes in the cluster
+
+Notes on ID streaming:
