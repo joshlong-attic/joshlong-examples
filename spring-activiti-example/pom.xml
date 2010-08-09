@@ -15,7 +15,6 @@
                 <groupId>commons-dbcp</groupId>
                 <artifactId>commons-dbcp</artifactId>
                 <version>1.2.2</version>
-
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -48,19 +47,25 @@
                 <version>3.0.3.RELEASE</version>
             </dependency>
             <dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>1.2.132</version>
+			</dependency>
+          <!--  <dependency>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>8.3-603.jdbc3</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.1</version>
+            </dependency>-->
             <dependency>
                 <groupId>org.activiti</groupId>
                 <artifactId>activiti-engine</artifactId>
                 <version>5.0.alpha4</version>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -97,6 +102,10 @@
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
