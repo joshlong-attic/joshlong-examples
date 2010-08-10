@@ -15,9 +15,7 @@ public class ActivitiClient {
 
     @PostConstruct
     public void start () throws Throwable {
-        System.out.println ( "Hello, world!") ;
-
-        ProcessInstance pi = processEngine.getProcessService().startProcessInstanceById( "helloWorld" );
+        ProcessInstance pi = processEngine.getProcessService().startProcessInstanceByKey( "helloWorld" );
     }
 
     public static void main(String[] args) throws Throwable {
