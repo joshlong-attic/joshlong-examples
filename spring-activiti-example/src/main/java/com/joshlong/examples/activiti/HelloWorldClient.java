@@ -1,7 +1,7 @@
 package com.joshlong.examples.activiti;
 
 import org.activiti.ProcessEngine;
-import org.activiti.ProcessInstance;
+import org.activiti.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -9,18 +9,28 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class ActivitiClient {
+public class HelloWorldClient {
 
-    @Autowired  private ProcessEngine processEngine ;
+    @Autowired
+    private ProcessEngine processEngine;
+
+    @Autowired
+    private ProcessService processService;
+
 
     @PostConstruct
-    public void start () throws Throwable {
-        ProcessInstance pi = processEngine.getProcessService().startProcessInstanceByKey( "helloWorld" );
+    public void start() throws Throwable {
+
+        this.processService.createDeployment().addClasspathResource(
+                "processes/helloworld.bpmn20.xml").deploy();
+        processService.startProcessInstanceByKey("helloWorld");
+
+
     }
 
     public static void main(String[] args) throws Throwable {
         ClassPathXmlApplicationContext classPathXmlApplicationContext
-                 = new ClassPathXmlApplicationContext("d1.xml");
+                = new ClassPathXmlApplicationContext("d1.xml");
         classPathXmlApplicationContext.start();
     }
 }

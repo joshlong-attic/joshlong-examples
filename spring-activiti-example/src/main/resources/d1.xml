@@ -34,15 +34,11 @@
           p:nestedTransactionAllowed="true"
             />
 
-    <bean class="org.activiti.impl.cfg.spring.ProcessEngineFactoryBean"
+    <bean id="processEngine" class="org.activiti.impl.cfg.spring.ProcessEngineFactoryBean"
           p:dataSource-ref="dataSource"
           p:transactionManager-ref="transactionManager"
           p:dbSchemaStrategy="DROP_CREATE"
           >
-        <property name="processResources">
-            <array>
-                <value>classpath:/processes/helloworld.bpmn20.xml</value>
-            </array>
-        </property>
     </bean>
+ 
 </beans>
