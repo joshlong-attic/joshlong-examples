@@ -4,9 +4,12 @@ import org.activiti.IdentityService;
 import org.activiti.ProcessEngine;
 import org.activiti.ProcessService;
 import org.activiti.TaskService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 
 @Configuration
 public class ProcessEngineConfiguration {
@@ -22,7 +25,6 @@ public class ProcessEngineConfiguration {
     public ProcessService processService() {
         return this.processEngine.getProcessService();
     }
-
 
     @Bean
     public TaskService taskService() {
