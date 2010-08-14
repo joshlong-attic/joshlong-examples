@@ -37,6 +37,8 @@
 
     </bean>
 
+    <bean class="com.joshlong.examples.activiti.FooActivityBehavior"  id="fooActivityBehavior"/>
+
     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
         <property name="targetDataSource">
 
@@ -67,9 +69,9 @@
     <bean id="elResolver" class="org.activiti.impl.el.StaticElResolver">
         <property name="map">
             <map>
-                <entry key="dataSource" value-ref="dataSource"/>
-                <entry key="springIntegrationActivityBehaviorMessagingGateway"
-                       value-ref="springIntegrationActivityBehaviorMessagingGateway"/>
+                <entry key="foo" value-ref="fooActivityBehavior"/>
+              <!--  <entry key="springIntegrationActivityBehaviorMessagingGateway"
+                       value-ref="springIntegrationActivityBehaviorMessagingGateway"/>-->
             </map>
         </property>
     </bean>

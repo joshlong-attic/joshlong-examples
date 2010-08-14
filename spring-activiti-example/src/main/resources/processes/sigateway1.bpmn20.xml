@@ -15,7 +15,7 @@
 
     <serviceTask id="javaService"
                  name="Java service invocation"
-                 activiti:class="#{springIntegrationActivityBehaviorMessagingGateway}" />
+                 activiti:class="#{foo}" />
 
     <sequenceFlow id="flow2" sourceRef="javaService" targetRef="waitState" />
 
