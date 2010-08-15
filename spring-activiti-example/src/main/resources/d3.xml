@@ -23,25 +23,23 @@
 
     <context:annotation-config/>
 
-    <int:channel id="fromActiviti"/>
-    <int:channel id="toActiviti"/>
+
+    <int:channel id="requestChannel" />
+    <int:channel id="replyChannel"/>
+
+    <bean id="echoServiceActivator" class="com.joshlong.examples.activiti.gateway.activiti.EchoServiceActivator" />
+
+    <int:service-activator input-channel="requestChannel" ref="echoServiceActivator" output-channel="replyChannel"/>
 
 
-    <bean class="com.joshlong.examples.activiti.spring.CustomServiceTaskClient" id="customServiceTaskClient"/>
-
-    <bean class="com.joshlong.examples.SpringIntegrationActivityBehaviorMessagingGateway"
-          id="springIntegrationActivityBehaviorMessagingGateway">
-        <property name="processEngine" ref="processEngine"/>
-        <property name="requestChannel" ref="fromActiviti"/>
-        <property name="replyChannel" ref="toActiviti"/>
-
+    <bean class="com.joshlong.examples.activiti.gateway.activiti.SpringIntegrationActivityBehaviorMessagingGateway" id="sigw">
+        <property name="requestChannel" ref="requestChannel"/><!--leave activiti to SI-->
+        <property name="replyChannel" ref="replyChannel"/> <!-- leave SI to activiti -->
+        <property name="autoStartup" value="true"/>
     </bean>
-
-    <bean class="com.joshlong.examples.activiti.FooActivityBehavior"  id="fooActivityBehavior"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
         <property name="targetDataSource">
-
             <bean class="org.apache.commons.dbcp.BasicDataSource"
                   p:url="jdbc:h2:tcp://localhost/~/activiti_example"
                   p:driverClassName="org.h2.Driver"
@@ -51,29 +49,16 @@
         </property>
     </bean>
 
-
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="dataSource" />
-
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource"/>
 
     <bean id="processEngine" class="org.activiti.impl.cfg.spring.ProcessEngineFactoryBean"
           p:dataSource-ref="dataSource"
           p:dbSchemaStrategy="DROP_CREATE"
           p:transactionManager-ref="transactionManager"
-          p:dataBaseName="h2"
           p:elResolver-ref="elResolver"
-            >
-    </bean>
+    />
 
+    <bean id="elResolver" class="com.joshlong.examples.SpringBeanFactoryELResolver"/>
 
-    <bean id="elResolver" class="org.activiti.impl.el.StaticElResolver">
-        <property name="map">
-            <map>
-                <entry key="foo" value-ref="fooActivityBehavior"/>
-              <!--  <entry key="springIntegrationActivityBehaviorMessagingGateway"
-                       value-ref="springIntegrationActivityBehaviorMessagingGateway"/>-->
-            </map>
-        </property>
-    </bean>
 
 </beans>
