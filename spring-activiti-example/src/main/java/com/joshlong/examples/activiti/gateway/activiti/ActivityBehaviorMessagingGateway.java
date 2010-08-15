@@ -48,11 +48,10 @@ import java.util.logging.Logger;
  * @author Josh Long (based on an idea sketched out w/ Dave Syer and Tom Baeyans)
  * @see org.activiti.impl.bpmn.ReceiveTaskActivity this the ActivityBehavior impl that ships w/ Activiti that has the machinery to wake up when signal'd.
  */
-public class ActivityBehaviorMessagingGateway extends SimpleMessagingGateway implements ActivityBehavior, InitializingBean, ApplicationContextAware {
+public class ActivityBehaviorMessagingGateway extends SimpleMessagingGateway implements ActivityBehavior  {
     public static final String WELL_KNOWN_EXECUTION_ID_HEADER_KEY = "activiti_spring_integration_executionId";
-    private ApplicationContext applicationContext;
     private ProcessEngine processEngine;
-    private CommandExecutor commandExecutor;
+    //private CommandExecutor commandExecutor;
 
     public void setProcessEngine(ProcessEngine processEngine) {
         this.processEngine = processEngine;
@@ -65,10 +64,6 @@ public class ActivityBehaviorMessagingGateway extends SimpleMessagingGateway imp
         this.forwardProcessVariablesAsMessageHeaders = forwardProcessVariablesAsMessageHeaders;
     }
 
-    public void setApplicationContext(ApplicationContext applicationContext)
-        throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 
     /*  private void receiveFromSpringIntegration(Message<?> msgFromSI) {
         String executionId = (String) msgFromSI.getHeaders().get(WELL_KNOWN_EXECUTION_ID_HEADER_KEY);
@@ -76,11 +71,9 @@ public class ActivityBehaviorMessagingGateway extends SimpleMessagingGateway imp
     }*/
     @Override
     protected void onInit() throws Exception {
-      //  this.processEngine = applicationContext.getBean(ProcessEngine.class); // todo how do we make this reference safe to acquire 
-
-        if (processEngine instanceof ProcessEngineImpl) {
+   /*     if (processEngine instanceof ProcessEngineImpl) {
             this.commandExecutor = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration().getCommandExecutor();
-        }
+        }*/
     }
 
     public void setUpdateProcessVariablesFromResponseMessageHeaders(boolean updateProcessVariablesFromResponseMessageHeaders) {
