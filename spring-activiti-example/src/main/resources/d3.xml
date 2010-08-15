@@ -58,7 +58,7 @@
           p:dbSchemaStrategy="DROP_CREATE"
             />
 
-    <bean id="elResolver" class="com.joshlong.examples.SpringBeanFactoryELResolver"/>
+    <bean id="elResolver" class="com.joshlong.examples.activiti.ActivityBehaviorSpringBeanFactoryELResolver"/>
 
 
 </beans>

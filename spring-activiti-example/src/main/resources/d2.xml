@@ -31,7 +31,7 @@
     </bean>
 
 
-	<bean id="elResolver" class="com.joshlong.examples.SpringBeanFactoryELResolver"/>
+	<bean id="elResolver" class="com.joshlong.examples.activiti.ActivityBehaviorSpringBeanFactoryELResolver"/>
 
 
 <!--
