@@ -9,10 +9,10 @@ import org.springframework.integration.annotation.ServiceActivator;
 
 public class EchoServiceActivator {
     @ServiceActivator
-    public Object echho(Object in) throws Throwable {
-        System.out.println(StringUtils.repeat("------------------------------", 100));
-        System.out.println(ToStringBuilder.reflectionToString(in));
-
-        return in;
+    public Message<?> echo(Message<?> inMsg) throws Throwable {
+        System.out.println(StringUtils.repeat("------------------------------", 50));
+        System.out.println( "from Spring Integration: " + ToStringBuilder.reflectionToString(inMsg));
+        System.out.println(StringUtils.repeat("------------------------------", 50));
+        return inMsg ;
     }
 }

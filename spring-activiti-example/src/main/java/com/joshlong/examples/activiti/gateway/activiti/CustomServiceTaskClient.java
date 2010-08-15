@@ -1,5 +1,6 @@
 package com.joshlong.examples.activiti.gateway.activiti;
 
+import org.activiti.Deployment;
 import org.activiti.ProcessEngine;
 import org.activiti.ProcessInstance;
 import org.activiti.ProcessService;
@@ -18,9 +19,9 @@ public class CustomServiceTaskClient {
         ProcessEngine processEngine = classPathXmlApplicationContext.getBean(ProcessEngine.class);
 
         ProcessService processService = processEngine.getProcessService();
-        processService.createDeployment().addClasspathResource("processes/sigateway1.bpmn20.xml").deploy();
+        Deployment deployment =processService.createDeployment().addClasspathResource("processes/sigateway1.bpmn20.xml").deploy();
 
-        ProcessInstance processInstance = processService.startProcessInstanceByKey("javaServiceDelegation");
+        ProcessInstance processInstance = processService.startProcessInstanceByKey("sigatewayProcess");
 
         System.out.println("process started: " + processInstance.getId());
     }

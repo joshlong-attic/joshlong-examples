@@ -17,7 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Josh Long
  */
 public class SpringBeanFactoryELResolver extends StaticElResolver implements ApplicationContextAware, InitializingBean {
+
     private ApplicationContext applicationContext;
+
     private Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
     public void setApplicationContext(ApplicationContext applicationContext)

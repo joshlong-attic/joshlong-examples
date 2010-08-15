@@ -34,9 +34,7 @@ public class GatewayClient implements BeanNameAware, BeanFactoryAware {
     }
 
     public Object makeItSo(Object in) throws Throwable {
-        Object response = simpleMessagingGateway.sendAndReceive( in );
-        System.out.println("The response is " + ToStringBuilder.reflectionToString(response));
-        return response ;
+        return simpleMessagingGateway.sendAndReceive(in);
     }
 
     @PostConstruct
@@ -53,10 +51,9 @@ public class GatewayClient implements BeanNameAware, BeanFactoryAware {
     public static void main(String[] args) throws Throwable {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("d4.xml");
 
-        GatewayClient gatewayClient
-                  = classPathXmlApplicationContext.getBean(GatewayClient.class);
+        GatewayClient gatewayClient = classPathXmlApplicationContext.getBean(GatewayClient.class);
 
-        gatewayClient.makeItSo( "hello, world!") ;
+        gatewayClient.makeItSo("hello, world!");
     }
 
     public void setBeanName(String name) {

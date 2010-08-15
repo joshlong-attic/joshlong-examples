@@ -23,20 +23,19 @@
 
     <context:annotation-config/>
 
-
-    <int:channel id="requestChannel" />
+    <int:channel id="requestChannel"/>
     <int:channel id="replyChannel"/>
 
-    <bean id="echoServiceActivator" class="com.joshlong.examples.activiti.gateway.activiti.EchoServiceActivator" />
+    <bean id="echoServiceActivator" class="com.joshlong.examples.activiti.gateway.activiti.EchoServiceActivator"/>
 
     <int:service-activator input-channel="requestChannel" ref="echoServiceActivator" output-channel="replyChannel"/>
 
-
-    <bean class="com.joshlong.examples.activiti.gateway.activiti.SpringIntegrationActivityBehaviorMessagingGateway" id="sigw">
-        <property name="requestChannel" ref="requestChannel"/><!--leave activiti to SI-->
-        <property name="replyChannel" ref="replyChannel"/> <!-- leave SI to activiti -->
-        <property name="autoStartup" value="true"/>
-    </bean>
+    <bean id="gateway" class="com.joshlong.examples.activiti.gateway.activiti.ActivityBehaviorMessagingGateway"
+          p:requestChannel-ref="requestChannel"
+          p:replyChannel-ref="replyChannel"
+          p:autoStartup="true"
+          p:processEngine-ref="processEngine"
+            />
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
         <property name="targetDataSource">
@@ -49,14 +48,15 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource"/>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
 
     <bean id="processEngine" class="org.activiti.impl.cfg.spring.ProcessEngineFactoryBean"
           p:dataSource-ref="dataSource"
-          p:dbSchemaStrategy="DROP_CREATE"
           p:transactionManager-ref="transactionManager"
           p:elResolver-ref="elResolver"
-    />
+          p:dbSchemaStrategy="DROP_CREATE"
+            />
 
     <bean id="elResolver" class="com.joshlong.examples.SpringBeanFactoryELResolver"/>
 
