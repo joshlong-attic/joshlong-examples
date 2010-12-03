@@ -1,0 +1,40 @@
+<html>
+<HEAD>
+
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+	<TITLE>The Event Driven Web</TITLE>
+
+	<STYLE type="text/css" media="screen">
+	</STYLE>
+
+	<script type="text/javascript" src="scripts/jquery/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="scripts/jquery/jquery.atmosphere.js"></script>
+
+
+</HEAD>
+<BODY>
+
+<script language="JavaScript" type="text/javascript">
+
+	/* this code will simply update  a text field with the inbound messages from atmosphere */
+
+	var endpoint = null;
+
+	$(document).ready(function() {
+
+		$.atmosphere.subscribe( '/pubsub/ticker' , function(response) {
+
+			if ( response.status == 200 )
+				alert('data:' + response.responseBody );
+
+		},  {transport: 'websocket'} );
+
+		endpoint = $.atmosphere.response;
+
+	});
+
+</script>
+
+</BODY>
+</html>

@@ -1,0 +1,3 @@
+<div id="header" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" >
+  <jsp:output omit-xml-declaration="yes" />
+</div> 
