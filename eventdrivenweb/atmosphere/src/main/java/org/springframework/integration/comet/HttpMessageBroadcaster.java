@@ -47,6 +47,22 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class HttpMessageBroadcaster extends DefaultBroadcaster {
 
+	public HttpMessageBroadcaster() {
+		config();
+	}
+
+	public HttpMessageBroadcaster(String name) {
+		super(name);
+		config();
+	}
+
+
+	private  void config(){
+		System.out.println( "----------------------------------------------------");
+		System.out.println( "inside " + HttpMessageBroadcaster.class.getName())  ;
+		System.out.println( "----------------------------------------------------");
+	}
+
 	private static final Log log = LogFactory.getLog(HttpMessageBroadcaster.class);
 
 	private final HttpMessageMapper messageMapper = new HttpMessageMapper();

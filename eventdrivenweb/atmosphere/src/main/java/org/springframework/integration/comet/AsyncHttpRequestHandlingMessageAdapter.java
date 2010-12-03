@@ -74,6 +74,15 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
     private volatile int messageThreshold = 0;
     private volatile BlockingQueue<HttpBroadcastMessage> messageQueue;
 
+	private Broadcaster broadcaster  ;
+
+	protected  Broadcaster ensureBroadcasterSetup()  {
+
+		if(null == this.broadcaster ) broadcaster = BroadcasterFactory.getDefault().lookup(DefaultBroadcaster.class, this.getComponentName());
+
+		return this.broadcaster ;
+	}
+
 
 	/**
 	 * Inbound Spring Integration messages are broadcast to suspended {@link org.atmosphere.cpr.AtmosphereResource}s using {@link org.atmosphere.cpr.Broadcaster#broadcast(Object)}.
@@ -92,23 +101,22 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
             messageQueue.add(httpMessage);
 
             if (messageQueue.size() >= messageThreshold) {
-                Broadcaster broadcaster = BroadcasterFactory.getDefault().lookup(DefaultBroadcaster.class, this.getComponentName());
-
-                if (broadcaster == null) {
+	         	Broadcaster b = this.ensureBroadcasterSetup() ;
+              if (b == null ) {
                     //TODO - This will potentially cause lost messages...fix that
                     log.warn("Message received but no Broadcaster available.");
                     return;
-                }
+                } 
 
                 List<HttpBroadcastMessage> broadcastMessages = new ArrayList<HttpBroadcastMessage>();
                 messageQueue.drainTo(broadcastMessages);
 
                 if (broadcastMessages.size() > 0) {
                     if (log.isInfoEnabled()) {
-                        log.info("Broadcasting message " + message.toString() + " to " + broadcaster.getAtmosphereResources().size() + " suspended resources.");
+                        log.info("Broadcasting message " + message.toString() + " to " + b.getAtmosphereResources().size() + " suspended resources.");
                     }
 
-                    Future<Object> future = broadcaster.broadcast(broadcastMessages);
+                    Future<Object> future = b.broadcast(broadcastMessages);
 
                     if (future != null) {
                         future.get();

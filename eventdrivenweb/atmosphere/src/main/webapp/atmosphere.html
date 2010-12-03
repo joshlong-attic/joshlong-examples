@@ -25,10 +25,10 @@
 
 		$.atmosphere.subscribe( '/pubsub/ticker' , function(response) {
 
-			if ( response.status == 200 )
+			if ( response.length >0 )
 				alert('data:' + response.responseBody );
 
-		},  {transport: 'websocket'} );
+		});
 
 		endpoint = $.atmosphere.response;
 

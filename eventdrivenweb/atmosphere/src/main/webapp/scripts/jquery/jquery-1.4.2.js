@@ -2019,7 +2019,7 @@ jQuery.event = {
 
 	special: {
 		ready: {
-			// Make sure the ready event is setup
+			// Make sure the ready event is ensureBroadcasterSetup
 			setup: jQuery.bindReady,
 			teardown: jQuery.noop
 		},
