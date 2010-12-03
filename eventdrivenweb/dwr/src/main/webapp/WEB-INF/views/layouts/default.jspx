@@ -1,0 +1,26 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:tiles="http://tiles.apache.org/tags-tiles" xmlns:spring="http://www.springframework.org/tags" >
+
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+
+
+	<spring:message code="application_name" var="app_name"/>
+	<title><spring:message code="welcome_titlepane" arguments="${app_name}"/></title>
+</head>
+
+<body>
+<div id="wrapper">
+	<tiles:insertAttribute name="header" ignore="true"/>
+
+	<tiles:insertAttribute name="menu" ignore="true"/>
+
+	<div id="main"> <tiles:insertAttribute name="body"/> </div>
+
+	<tiles:insertAttribute name="footer" ignore="true"/>
+</div>
+</body>
+</html>

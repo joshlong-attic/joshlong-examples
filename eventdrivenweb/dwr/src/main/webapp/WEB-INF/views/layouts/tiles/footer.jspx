@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" id="footer"  >
+
+	<jsp:output omit-xml-declaration="yes"/>
+	<spring:url value="/" var="home"/>
+	<a href="${home}"> <spring:message code="button_home"/> </a>
+
+
+</div>

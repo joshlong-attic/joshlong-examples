@@ -1,0 +1,5 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:jsp="http://java.sun.com/JSP/Page" >
+  <jsp:output omit-xml-declaration="yes" />
+
+
+</div>
