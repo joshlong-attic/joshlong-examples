@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class DwrConfiguration extends WebConfiguration {
 
-	@Value("#{out}") protected MessageChannel messageChannel;
+	@Value("#{in}") protected MessageChannel messageChannel;
 
 	@Bean
 	public AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter (){
