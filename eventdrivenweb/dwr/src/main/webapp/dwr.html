@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<title> Server Side Push Fun
+	</title>
+
+
+	<script type="text/javascript" src="../dwr/interface/chat.js"></script>
+	<script type='text/javascript' src="../dwr/engine.js"></script>
+	<script type="text/javascript" src="../dwr/util.js"></script>
+	<script type="text/javascript" src="scripts/jquery/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="scripts/jquery/jquery.form.js"></script>
+	<script type="text/javascript">
+
+		function processMessage(msg){
+			alert('msg: ' +msg);
+		}
+
+
+		$(document).ready( function(evt) {
+
+			var b = $('#b');
+			var m = $('#m');
+			var c = $('#c');
+			var u = $('#u');
+
+			b.click(function(evt) {
+
+				var uid = u.val();
+
+				var txt = m.val();
+
+				try {
+					chat.say( uid, txt ,function(msgFromAddition){}) ;
+				}catch(e){
+				  	alert('e:'+e);
+				}
+
+				return false;
+			});
+
+			dwr.engine.setActiveReverseAjax(true);
+
+		});
+	</script>
+
+
+</head>
+
+<body>
+
+<h1> Now is the time.
+</h1>
+
+<form id="f">
+
+	<textarea rows="10" cols="50" id="c"></textarea>
+	<br/>
+
+	<input type="text" id="u"/>
+	
+	<input type="text" id="m"/>
+	<br/>
+
+	<input type="submit" id="b" value="Send Message"/>
+
+</form>
+
+</body>
+</html>
+
