@@ -17,14 +17,6 @@
 
 	<dwr:configuration />
 
-<!--		<dwr:create type="spring" javascript="chat">
-			<dwr:param name="beanName" value="chat"/>
-		</dwr:create>
-		<dwr:convert class="org.springsource.examples.eventdrivenweb.service.Message" type="bean"/>
-		<dwr:convert class="org.springsource.examples.eventdrivenweb.service.Chat" type="bean"/>
-		<dwr:convert class="org.springsource.examples.eventdrivenweb.service.User" type="bean"/>-->
-	<!--</dwr:configuration>-->
-
 	<mvc:default-servlet-handler/>
 
 	<mvc:view-controller path="/" view-name="index"/>
@@ -33,16 +25,10 @@
 	<mvc:view-controller path="/resourceNotFound"/>
 	<mvc:view-controller path="/dataAccessFailure"/>
 
-
-
 	<int:inbound-channel-adapter expression=" '{ date: '+ T(System).currentTimeMillis()  + ' }'   " channel="out">
 		<int:poller fixed-rate="10000"/>
 	</int:inbound-channel-adapter>
 
 	<int:channel id="out"/>
-
-
- 
-
 
 </beans>

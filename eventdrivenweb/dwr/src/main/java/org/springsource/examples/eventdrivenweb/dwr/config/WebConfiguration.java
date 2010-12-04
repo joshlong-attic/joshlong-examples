@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMeth
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
+
 import org.springsource.examples.eventdrivenweb.dwr.util.MapBuilder;
 
 import java.util.Map;
@@ -32,22 +33,25 @@ import java.util.Properties;
  */
 @Configuration
 public class WebConfiguration {
+    @Bean
+    public HttpRequestHandlerAdapter httpRequestHandlerAdapter() {
+        return new HttpRequestHandlerAdapter();
+    }
 
-	@Bean public HttpRequestHandlerAdapter httpRequestHandlerAdapter (){
-		return new HttpRequestHandlerAdapter();
-	}
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
         reloadableResourceBundleMessageSource.setBasenames("WEB-INF/i18n/messages,WEB-INF/i18n/application".split(","));
         reloadableResourceBundleMessageSource.setFallbackToSystemLocale(false);
+
         return reloadableResourceBundleMessageSource;
     }
 
     @Bean
     public BeanNameUrlHandlerMapping beanNameUrlHandlerMapping() {
         BeanNameUrlHandlerMapping mapping = new BeanNameUrlHandlerMapping();
-	    mapping.setOrder(5);
+        mapping.setOrder(5);
+
         return mapping;
     }
 
@@ -55,10 +59,11 @@ public class WebConfiguration {
     public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setCookieName("locale");
+
         return resolver;
     }
 
-	@Bean
+    @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         resolver.setDefaultErrorView("uncaughtException");
@@ -67,14 +72,15 @@ public class WebConfiguration {
 		        .put(DataAccessException.class, "dataAccessFailure")
 		        .put(NoSuchRequestHandlingMethodException.class, "resourceNotFound")
 		        .put(TypeMismatchException.class, "resourceNotFound")
-		        .put(MissingServletRequestParameterException.class, "resourceNotFound")
-		        .toMap();
+		        .put(MissingServletRequestParameterException.class, "resourceNotFound").toMap();
 
         Properties props = new Properties();
+
         for (Class c : classStringMap.keySet())
             props.put(c.getName(), classStringMap.get(c));
 
-	    resolver.setExceptionMappings(props);
+        resolver.setExceptionMappings(props);
+
         return resolver;
     }
 
@@ -87,6 +93,7 @@ public class WebConfiguration {
     public UrlBasedViewResolver tilesViewResolver() {
         UrlBasedViewResolver resolver = new UrlBasedViewResolver();
         resolver.setViewClass(TilesView.class);
+
         return resolver;
     }
 
@@ -94,6 +101,7 @@ public class WebConfiguration {
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
         tilesConfigurer.setDefinitions("/WEB-INF/views/layouts/layouts.xml,/WEB-INF/views/**views.xml".split(","));
+
         return tilesConfigurer;
     }
 }

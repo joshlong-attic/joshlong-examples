@@ -42,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * This provides analogous support using the DWR (http://directwebremoting.org/) project which has excellent Spring support already.
  *
+ * NB: the Atmosphere support is far more flexible. Use this adapter if you've already got DWR and simply want a clean, messaging-oriented way of solving problems using it.
+ *
  * @since 1.0
  * @author Josh Long
  */
