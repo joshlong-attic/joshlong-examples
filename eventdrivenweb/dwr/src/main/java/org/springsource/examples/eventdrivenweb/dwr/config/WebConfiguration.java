@@ -33,6 +33,7 @@ import java.util.Properties;
  */
 @Configuration
 public class WebConfiguration {
+
     @Bean
     public HttpRequestHandlerAdapter httpRequestHandlerAdapter() {
         return new HttpRequestHandlerAdapter();
@@ -43,7 +44,6 @@ public class WebConfiguration {
         ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
         reloadableResourceBundleMessageSource.setBasenames("WEB-INF/i18n/messages,WEB-INF/i18n/application".split(","));
         reloadableResourceBundleMessageSource.setFallbackToSystemLocale(false);
-
         return reloadableResourceBundleMessageSource;
     }
 
@@ -51,7 +51,6 @@ public class WebConfiguration {
     public BeanNameUrlHandlerMapping beanNameUrlHandlerMapping() {
         BeanNameUrlHandlerMapping mapping = new BeanNameUrlHandlerMapping();
         mapping.setOrder(5);
-
         return mapping;
     }
 
@@ -59,7 +58,6 @@ public class WebConfiguration {
     public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setCookieName("locale");
-
         return resolver;
     }
 
@@ -93,7 +91,6 @@ public class WebConfiguration {
     public UrlBasedViewResolver tilesViewResolver() {
         UrlBasedViewResolver resolver = new UrlBasedViewResolver();
         resolver.setViewClass(TilesView.class);
-
         return resolver;
     }
 
@@ -101,7 +98,6 @@ public class WebConfiguration {
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
         tilesConfigurer.setDefinitions("/WEB-INF/views/layouts/layouts.xml,/WEB-INF/views/**views.xml".split(","));
-
         return tilesConfigurer;
     }
 }
