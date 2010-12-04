@@ -1,25 +1,15 @@
 package org.springsource.examples.eventdrivenweb.dwr.config;
 
-import org.directwebremoting.convert.BeanConverter;
-import org.directwebremoting.extend.Configurator;
-
-import org.directwebremoting.extend.Converter;
-import org.directwebremoting.spring.*;
-
+import org.directwebremoting.spring.DwrNamespaceHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.springsource.examples.eventdrivenweb.dwr.util.MapBuilder;
-import org.springsource.examples.eventdrivenweb.service.Chat;
-import org.springsource.examples.eventdrivenweb.service.Message;
-
-import java.util.Arrays;
-import java.util.Map;
+import org.springframework.integration.MessageChannel;
+import org.springframework.integration.dwr.AsyncHttpRequestHandlingMessageAdapter;
 
 import javax.annotation.PostConstruct;
 
@@ -32,20 +22,26 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 public class DwrConfiguration extends WebConfiguration implements BeanFactoryAware, BeanNameAware {
-    // @Value("#{out}")	protected MessageChannel messageChannel;
+
+	@Value("#{out}") protected MessageChannel messageChannel;
+
     protected String beanName;
+
     protected BeanFactory beanFactory;
+
 
     @PostConstruct
     public void start() {
         System.out.println(DwrConfiguration.class.getName() + " is starting...");
     }
 
-    @Bean
+
+
+  /*  @Bean
     public Chat chat() {
         return new Chat();
     }
-
+*/
 
 
  /*ConverterConfig converterConfig(){
@@ -100,12 +96,12 @@ public class DwrConfiguration extends WebConfiguration implements BeanFactoryAwa
         this.beanName = name;
     }
 
-    /**
-     *
-     * hack to make the value of the static field visible to our configuration. the field's protected, so we can't reference it directly without visibility promotion.
-     *
-     */
-    abstract static class DwrNamespaceHandlerVisibilityPromoter extends DwrNamespaceHandler {
-        public static final String  SPRING_CONFIGURATOR_ID = DEFAULT_SPRING_CONFIGURATOR_ID;
-    }
+
+	@Bean
+	public AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter (){
+		AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();
+		inboundDwrAdapter.setRequestChannel(this.messageChannel);
+
+		return inboundDwrAdapter ;
+	}
 }

@@ -6,43 +6,20 @@
 	</title>
 
 
-	<script type="text/javascript" src="../dwr/interface/chat.js"></script>
+	<!--<script type="text/javascript" src="../dwr/interface/chat.js"></script>-->
 	<script type='text/javascript' src="../dwr/engine.js"></script>
 	<script type="text/javascript" src="../dwr/util.js"></script>
 	<script type="text/javascript" src="scripts/jquery/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="scripts/jquery/jquery.form.js"></script>
 	<script type="text/javascript">
 
-		function processMessage(msg){
-			alert('msg: ' +msg);
+		function handleMessage(msg){
+			alert('msg from server: ' + msg  );
+			
 		}
 
+		dwr.engine.setActiveReverseAjax(true);
 
-		$(document).ready( function(evt) {
-
-			var b = $('#b');
-			var m = $('#m');
-			var c = $('#c');
-			var u = $('#u');
-
-			b.click(function(evt) {
-
-				var uid = u.val();
-
-				var txt = m.val();
-
-				try {
-					chat.say( uid, txt ,function(msgFromAddition){}) ;
-				}catch(e){
-				  	alert('e:'+e);
-				}
-
-				return false;
-			});
-
-			dwr.engine.setActiveReverseAjax(true);
-
-		});
 	</script>
 
 
@@ -52,20 +29,7 @@
 
 <h1> Now is the time.
 </h1>
-
-<form id="f">
-
-	<textarea rows="10" cols="50" id="c"></textarea>
-	<br/>
-
-	<input type="text" id="u"/>
-	
-	<input type="text" id="m"/>
-	<br/>
-
-	<input type="submit" id="b" value="Send Message"/>
-
-</form>
+<div id="log"></div>
 
 </body>
 </html>
