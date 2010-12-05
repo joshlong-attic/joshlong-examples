@@ -1,13 +1,10 @@
 package org.springsource.examples.eventdrivenweb.dwr.config;
 
 import org.springframework.beans.TypeMismatchException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMeth
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
-
 import org.springsource.examples.eventdrivenweb.dwr.util.MapBuilder;
 
 import java.util.Map;
@@ -31,7 +27,7 @@ import java.util.Properties;
  * @author Josh Long
  * @since 1.0
  */
-@Configuration
+@Configuration @SuppressWarnings({"unused"})
 public class WebConfiguration {
 
     @Bean
@@ -66,7 +62,7 @@ public class WebConfiguration {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         resolver.setDefaultErrorView("uncaughtException");
 
-        Map<Class, String> classStringMap = new MapBuilder<Class, String>()
+        Map<Class, String> classStringMap = MapBuilder.<Class,String>newMap()
 		        .put(DataAccessException.class, "dataAccessFailure")
 		        .put(NoSuchRequestHandlingMethodException.class, "resourceNotFound")
 		        .put(TypeMismatchException.class, "resourceNotFound")

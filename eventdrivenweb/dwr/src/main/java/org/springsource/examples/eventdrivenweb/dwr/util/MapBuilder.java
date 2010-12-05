@@ -22,7 +22,7 @@ public class MapBuilder<K, V> {
         this.map = new ConcurrentHashMap<K, V>();
     }
 
-    public MapBuilder(Class<?extends Map<K, V>> c) {
+    public MapBuilder(Class<? extends Map<K, V>> c) {
         try {
             this.map = c.newInstance();
         } catch (Throwable e) {
@@ -43,4 +43,8 @@ public class MapBuilder<K, V> {
     public Map<K, V> toMap() {
         return this.map;
     }
+
+	public static <K,V> MapBuilder<K,V> newMap(){
+		return new MapBuilder<K,V>();
+	}
 }

@@ -15,9 +15,14 @@
 
 	<task:annotation-driven/>
 
-	<dwr:configuration/>
-
 	<mvc:default-servlet-handler/>
+	
+	<dwr:configuration>
+		<dwr:create type="spring" javascript="chat">
+			<dwr:param name="beanName" value="chat" />
+		</dwr:create>
+	</dwr:configuration>
+
 
 	<mvc:view-controller path="/" view-name="index"/>
 	<mvc:view-controller path="/html5-index"/>
@@ -25,19 +30,11 @@
 	<mvc:view-controller path="/resourceNotFound"/>
 	<mvc:view-controller path="/dataAccessFailure"/>
 
-	<!--	<int:inbound-channel-adapter expression=" '{ date: '+ T(System).currentTimeMillis()  + ' }'   " channel="out">
+<!--	<int:inbound-channel-adapter expression="#{  new java.lang.Double( T(java.lang.System).currentTimeMillis() )  }" channel="in">
 		<int:poller fixed-rate="10000"/>
 	</int:inbound-channel-adapter>-->
 
-
-	<file:inbound-channel-adapter channel="i1" directory="#{systemProperties['user.home']+'/Desktop/foo'}">
-		<int:poller fixed-rate="10000"/>
-	</file:inbound-channel-adapter>
-
-	<int:channel id="i1" />
-
-	<int:transformer input-channel="i1" expression="payload.absolutePath" output-channel="in" />
-
-	<int:channel id="in" />
+	<int:channel id="messageChannel" />
+	<int:channel id="rosterChannel"/>
 
 </beans>

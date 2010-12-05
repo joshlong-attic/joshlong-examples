@@ -1,17 +1,14 @@
 package org.springsource.examples.eventdrivenweb.dwr.config;
 
-import org.directwebremoting.spring.DwrNamespaceHandler;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.integration.MessageChannel;
 import org.springframework.integration.dwr.AsyncHttpRequestHandlingMessageAdapter;
 
-import javax.annotation.PostConstruct;
+import org.springsource.examples.eventdrivenweb.example.Chat;
 
 
 /**
@@ -22,13 +19,41 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 public class DwrConfiguration extends WebConfiguration {
+    /**
+     * the channel to which message events should be sent
+     */
+    @Value("#{messageChannel}")
+    protected MessageChannel messages;
 
-	@Value("#{in}") protected MessageChannel messageChannel;
+    /**
+     * the channel to which roster events should be sent
+     */
+    @Value("#{rosterChannel}")
+    protected MessageChannel roster;
 
-	@Bean
-	public AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter (){
-		AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();
-		inboundDwrAdapter.setRequestChannel(this.messageChannel);
-		return inboundDwrAdapter ;
-	}
+    @Bean
+    public Chat chat() {
+        Chat chat = new Chat();
+        chat.setMessageChannel(this.messages);
+        chat.setRosterChannel(this.roster);
+
+        return chat;
+    }
+
+    @Bean
+    public AsyncHttpRequestHandlingMessageAdapter messageAdapter() {
+        AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();
+        inboundDwrAdapter.setRequestChannel(this.messages);
+	    inboundDwrAdapter.setDefaultCallbackFunctionName( "handleMessage");
+        return inboundDwrAdapter;
+    }
+
+    @Bean
+    public AsyncHttpRequestHandlingMessageAdapter rosterAdapter() {
+        AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();
+        inboundDwrAdapter.setDefaultCallbackFunctionName("handleRoster");
+        inboundDwrAdapter.setRequestChannel(this.roster);
+
+        return inboundDwrAdapter;
+    }
 }

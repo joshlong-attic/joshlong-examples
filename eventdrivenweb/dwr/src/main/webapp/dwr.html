@@ -6,19 +6,97 @@
 	</title>
 
 
-	<!--<script type="text/javascript" src="../dwr/interface/chat.js"></script>-->
+	<script type="text/javascript" src="../dwr/interface/chat.js"></script>
 	<script type='text/javascript' src="../dwr/engine.js"></script>
 	<script type="text/javascript" src="../dwr/util.js"></script>
 	<script type="text/javascript" src="scripts/jquery/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="scripts/jquery/jquery.form.js"></script>
 	<script type="text/javascript">
 
-		function handleMessage(msg){
-			alert('msg from server: ' + msg  );
-			
+		function handleMessage(msg) {
+			refreshChatTranscript();
 		}
 
-		dwr.engine.setActiveReverseAjax(true);
+		function handleRoster(r){
+			refreshRoster();
+		}
+
+		function refreshRoster(){
+
+			chat.getUsers(function(usrs){
+
+				var t = '';
+
+				for(var i =0  ; i< usrs.length ; i++)
+					t+= usrs[i] + '<br/>';
+
+				roster.html(t);
+
+			});
+		}
+
+		function refreshChatTranscript() {
+			chat.getChatMessages(function(lines) {
+				var t = '';
+				for (var i = 0; i < lines.length; i++) {
+					t += lines[i] + '<br/>';
+				}
+				transcript.html ( '<div>'+ t +'</div>');
+
+			});
+		}
+
+		var user;
+		var msgField;
+		var chatRegion;
+		var sayBtn;
+		var joinRegion;
+		var transcript;
+		var roster;
+
+		$(document).ready(function() {
+			// first disable form
+
+			roster = $('#roster');
+			chatRegion = $('#chat');
+			transcript = $('#transcript');
+			joinRegion = $('#join');
+			msgField = $('#message');
+			sayBtn = $('#say');
+
+			joinRegion.hide();
+			chatRegion.hide();
+
+			var uidField = $('#uid');
+			var joinBtn = $('#joinBtn');
+
+			joinBtn.click(function(e) {
+				user = uidField.val();
+				chat.join(user, function() {
+					joinRegion.hide();
+					chatRegion.show();
+				});
+				$('#welcome').text( 'Welcome ' + user);
+				e.preventDefault();
+			});
+
+			sayBtn.click(function() {
+
+				var toSend = user + ': ' + msgField.val();
+				chat.groupMessage(toSend, function() {} );
+
+			});
+
+
+			// default state
+			joinRegion.show();
+
+			dwr.engine.setActiveReverseAjax(true);
+
+			refreshRoster();
+			refreshChatTranscript();
+
+		});
 
 	</script>
 
@@ -27,9 +105,31 @@
 
 <body>
 
-<h1> Now is the time.
-</h1>
+<h1 id="welcome"> </h1>
+
 <div id="log"></div>
+
+<form action="">
+
+	<div id="join">
+		<input type="text" id="uid"/> <input value="Join" type="submit" id="joinBtn"/>
+	</div>
+
+	<div id="chat" style="width:400px;">
+		<table>
+			<tr>
+				<td valign="top">
+					<div style="width:100px" id="roster"></div>
+				</td>
+				<td width="10"></td>
+				<td>
+					<div id="transcript" style="border: 1px solid black; width:400px; height:200px; overflow-y: scroll ;"></div>
+					<div style="float:right;"><input type="text" id="message"/> <input value="Enter" type="button" id="say"/></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</form>
 
 </body>
 </html>
