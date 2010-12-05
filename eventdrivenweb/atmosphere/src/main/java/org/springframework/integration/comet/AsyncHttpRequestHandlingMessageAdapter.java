@@ -17,13 +17,17 @@ package org.springframework.integration.comet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.atmosphere.cpr.*;
+
 import org.springframework.beans.factory.BeanNameAware;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
+
 import org.springframework.integration.Message;
 import org.springframework.integration.MessageChannel;
 import org.springframework.integration.MessageDeliveryException;
@@ -34,19 +38,23 @@ import org.springframework.integration.endpoint.AbstractEndpoint;
 import org.springframework.integration.http.support.DefaultHttpHeaderMapper;
 import org.springframework.integration.mapping.HeaderMapper;
 import org.springframework.integration.support.MessageBuilder;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
 import org.springframework.web.HttpRequestHandler;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -73,25 +81,25 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
     //feature if someone wants to control the rate of messages to cut down on HTTP traffic
     private volatile int messageThreshold = 0;
     private volatile BlockingQueue<HttpBroadcastMessage> messageQueue;
+    private Broadcaster broadcaster;
 
-	private Broadcaster broadcaster  ;
+    protected Broadcaster ensureBroadcasterSetup() {
+        if (null == this.broadcaster) {
+            broadcaster = BroadcasterFactory.getDefault().lookup(DefaultBroadcaster.class, this.getComponentName());
+        }
 
-	protected  Broadcaster ensureBroadcasterSetup()  {
+        return this.broadcaster;
+    }
 
-		if(null == this.broadcaster ) broadcaster = BroadcasterFactory.getDefault().lookup(DefaultBroadcaster.class, this.getComponentName());
-
-		return this.broadcaster ;
-	}
-
-
-	/**
-	 * Inbound Spring Integration messages are broadcast to suspended {@link org.atmosphere.cpr.AtmosphereResource}s using {@link org.atmosphere.cpr.Broadcaster#broadcast(Object)}.
-	 *
-	 * @param message the Spring Integration message
-	 * @throws org.springframework.integration.MessageRejectedException
-	 * @throws org.springframework.integration.MessageHandlingException
-	 * @throws org.springframework.integration.MessageDeliveryException
-	 */
+    /**
+     * Inbound Spring Integration messages are broadcast to suspended {@link org.atmosphere.cpr.AtmosphereResource}s using {@link org.atmosphere.cpr.Broadcaster#broadcast(Object)}.
+     *
+     * @param message the Spring Integration message
+     * @throws org.springframework.integration.MessageRejectedException
+     * @throws org.springframework.integration.MessageHandlingException
+     * @throws org.springframework.integration.MessageDeliveryException
+     *
+     */
     public void handleMessage(Message<?> message) throws MessageHandlingException, MessageDeliveryException {
         try {
             Message<?> springIntegrationMessage = MessageBuilder.fromMessage(message).setHeaderIfAbsent(ENDPOINT_PATH_HEADER, getComponentName()).build();
@@ -101,12 +109,14 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
             messageQueue.add(httpMessage);
 
             if (messageQueue.size() >= messageThreshold) {
-	         	Broadcaster b = this.ensureBroadcasterSetup() ;
-              if (b == null ) {
+                Broadcaster b = this.ensureBroadcasterSetup();
+
+                if (b == null) {
                     //TODO - This will potentially cause lost messages...fix that
                     log.warn("Message received but no Broadcaster available.");
+
                     return;
-                } 
+                }
 
                 List<HttpBroadcastMessage> broadcastMessages = new ArrayList<HttpBroadcastMessage>();
                 messageQueue.drainTo(broadcastMessages);
@@ -133,7 +143,7 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
     }
 
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	    
         AtmosphereResource<HttpServletRequest, HttpServletResponse> resource = getAtmosphereResource(request);
 
         if (!this.getComponentName().equals(resource.getBroadcaster().getID())) {
@@ -158,14 +168,6 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
         consumerEndpointFactoryBean.setHandler(this);
 
         this.consumerEndpoint = consumerEndpointFactoryBean.getObject();
-
-        /*if (this.messageChannel instanceof PollableChannel) {
-                this.consumerEndpoint = new PollingConsumer(
-                                (PollableChannel) this.messageChannel, this);
-        } else if (this.messageChannel instanceof SubscribableChannel) {
-                this.consumerEndpoint = new EventDrivenConsumer(
-                                (SubscribableChannel) this.messageChannel, this);
-        }*/
     }
 
     private void subscribe(AtmosphereResource<HttpServletRequest, HttpServletResponse> resource) {
@@ -260,6 +262,7 @@ public class AsyncHttpRequestHandlingMessageAdapter extends AbstractEndpoint imp
     private AtmosphereResource<HttpServletRequest, HttpServletResponse> getAtmosphereResource(HttpServletRequest request) {
         AtmosphereResource<HttpServletRequest, HttpServletResponse> resource = (AtmosphereResource<HttpServletRequest, HttpServletResponse>) request.getAttribute(AtmosphereServlet.ATMOSPHERE_RESOURCE);
         Assert.notNull(resource, "AtmosphereResource could not be located for the request.  Check that AtmosphereServlet is configured correctly in web.xml");
+
         return resource;
     }
 

@@ -23,10 +23,10 @@
 
 	$(document).ready(function() {
 
-		$.atmosphere.subscribe( '/pubsub/ticker' , function(response) {
+		$.atmosphere.subscribe('/pubsub/ticker', function(response) {
 
-			if ( response.length >0 )
-				alert('data:' + response.responseBody );
+			if (response.length > 0)
+				alert('data:' + response.responseBody);
 
 		});
 
