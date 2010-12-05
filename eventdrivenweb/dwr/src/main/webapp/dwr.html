@@ -13,25 +13,53 @@
 	<script type="text/javascript" src="scripts/jquery/jquery.form.js"></script>
 	<script type="text/javascript">
 
+		function handleDirectMessage(msg) {
+			var h = dm.html();
+			dm.html(h + '<div> ' + msg + ' </div>');
+		}
+
+
 		function handleMessage(msg) {
 			refreshChatTranscript();
 		}
 
-		function handleRoster(r){
+		function handleRoster(r) {
 			refreshRoster();
 		}
 
-		function refreshRoster(){
+		function undoDirectMessage() {
+			privateMessageUser = null;
+			setupDirectMessage(null)
+		}
 
-			chat.getUsers(function(usrs){
+		function setupDirectMessage(handle) {
+			privateMessageUser = handle;
+			jQuery.each(handles, function(indx, u) {
+				$('#' + u).css({'font-weight':'normal'});
+			});
+			if (handle != null) $('#' + handle).css({'font-weight':'bold'});
+		}
 
-				var t = '';
+		function refreshRoster() {
 
-				for(var i =0  ; i< usrs.length ; i++)
-					t+= usrs[i] + '<br/>';
+			chat.getUsers(function(usrs) {
 
-				roster.html(t);
+				handles = jQuery.map(usrs, function(u, indx) {
+					return u.split(':')[0];
+				});
 
+				var content = '';
+				jQuery.each(handles, function(i, usr) {
+					content += '<span '+ ( usr == user ? 'class="me"': 'class="member" ') +' id="' + usr + '">' + usr + '</span><br/> ';
+				});
+				roster.html(content);
+
+				jQuery.each(handles, function(i, v) {
+					if(v!=user)
+					$('#' + v).click(function() {
+						setupDirectMessage(v);
+					});
+				});
 			});
 		}
 
@@ -41,11 +69,14 @@
 				for (var i = 0; i < lines.length; i++) {
 					t += lines[i] + '<br/>';
 				}
-				transcript.html ( '<div>'+ t +'</div>');
+				transcript.html('<div>' + t + '</div>');
 
 			});
 		}
 
+		var dm;
+		var resetBtn;
+		var privateMessageUser;
 		var user;
 		var msgField;
 		var chatRegion;
@@ -53,6 +84,7 @@
 		var joinRegion;
 		var transcript;
 		var roster;
+		var handles; // sync'd when the roster is sync'd
 
 		$(document).ready(function() {
 			// first disable form
@@ -62,7 +94,9 @@
 			transcript = $('#transcript');
 			joinRegion = $('#join');
 			msgField = $('#message');
+			resetBtn = $('#reset');
 			sayBtn = $('#say');
+			dm = $('#dm');
 
 			joinRegion.hide();
 			chatRegion.hide();
@@ -76,14 +110,35 @@
 					joinRegion.hide();
 					chatRegion.show();
 				});
-				$('#welcome').text( 'Welcome ' + user);
+				$('#welcome').text('Welcome ' + user);
 				e.preventDefault();
+			});
+
+			resetBtn.click(function() {
+				chat.reset(function() {
+					refreshChatTranscript();
+					refreshRoster();
+					chatRegion.hide();
+					joinRegion.show();
+				})
 			});
 
 			sayBtn.click(function() {
 
-				var toSend = user + ': ' + msgField.val();
-				chat.groupMessage(toSend, function() {} );
+				var toSend;
+
+				if (privateMessageUser != null) {
+					toSend =  'from ' + user + ':' + msgField.val();
+					chat.directMessage(privateMessageUser, toSend, function() {
+						undoDirectMessage();
+					});
+				} else {
+					toSend = user + ': ' + msgField.val();
+					chat.groupMessage(toSend, function() {
+						msgField.val('')
+						undoDirectMessage();
+					});
+				}
 
 			});
 
@@ -96,35 +151,63 @@
 			refreshRoster();
 			refreshChatTranscript();
 
+
 		});
 
 	</script>
 
+	<style type="text/css">
+		body {
+			font-family: sans-serif;
+		}
+		.me { cursor: pointer;color : gray;}
+		.member {  cursor: pointer; }
+	</style>
 
 </head>
 
 <body>
 
-<h1 id="welcome"> </h1>
+<h1 id="welcome"></h1>
 
 <div id="log"></div>
 
 <form action="">
 
 	<div id="join">
+		Welcome. Please sign in.
+
+		<br/>
+
 		<input type="text" id="uid"/> <input value="Join" type="submit" id="joinBtn"/>
 	</div>
 
-	<div id="chat" style="width:400px;">
-		<table>
+	<div id="chat" style="width:600px;">
+
+		<table width="100%">
 			<tr>
-				<td valign="top">
-					<div style="width:100px" id="roster"></div>
+				<td valign="top" width="100">
+					<div style="width:100%;text-align:right;" id="roster"></div>
 				</td>
 				<td width="10"></td>
 				<td>
-					<div id="transcript" style="border: 1px solid black; width:400px; height:200px; overflow-y: scroll ;"></div>
-					<div style="float:right;"><input type="text" id="message"/> <input value="Enter" type="button" id="say"/></div>
+					<div class="label">Main Chat</div>
+					<div id="transcript" style="border: 1px solid black; width:100%; height:200px; overflow-y: scroll ;"></div>
+					<div>
+
+						<div style="height:10px;"></div>
+
+						<div style="margin-bottom:5px;"><textarea rows="5" id="message" style="width:100%;border:1px solid black;"></textarea></div>
+
+						<input value="Enter" type="button" id="say"/>
+						<input value="Reset Chat Room" type="button" id="reset"/>
+
+					</div>
+				</td>
+				<td width="10"></td>
+				<td width="200" valign="top">
+					<div class="label">Direct Messages</div>
+					<div id="dm" style="border: 1px solid black; width:100%; height:200px; overflow-y: scroll ;"></div> 
 				</td>
 			</tr>
 		</table>

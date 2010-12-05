@@ -19,6 +19,13 @@ import org.springsource.examples.eventdrivenweb.example.Chat;
  */
 @Configuration
 public class DwrConfiguration extends WebConfiguration {
+
+	/**
+	 * channel to hold direct messages
+	 */
+	@Value("#{dmChannel}")
+	private MessageChannel directMessages;
+
     /**
      * the channel to which message events should be sent
      */
@@ -36,7 +43,7 @@ public class DwrConfiguration extends WebConfiguration {
         Chat chat = new Chat();
         chat.setMessageChannel(this.messages);
         chat.setRosterChannel(this.roster);
-
+	    chat.setDirectMessageChannel( this.directMessages);
         return chat;
     }
 
@@ -47,7 +54,14 @@ public class DwrConfiguration extends WebConfiguration {
 	    inboundDwrAdapter.setDefaultCallbackFunctionName( "handleMessage");
         return inboundDwrAdapter;
     }
+	   @Bean
+    public AsyncHttpRequestHandlingMessageAdapter dmAdapter() {
+        AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();
+        inboundDwrAdapter.setDefaultCallbackFunctionName("handleDirectMessage");
+        inboundDwrAdapter.setRequestChannel(this.directMessages);
 
+        return inboundDwrAdapter;
+    }
     @Bean
     public AsyncHttpRequestHandlingMessageAdapter rosterAdapter() {
         AsyncHttpRequestHandlingMessageAdapter inboundDwrAdapter = new AsyncHttpRequestHandlingMessageAdapter();

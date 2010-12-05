@@ -36,5 +36,6 @@
 
 	<int:channel id="messageChannel" />
 	<int:channel id="rosterChannel"/>
+	<int:channel id="dmChannel"/>
 
 </beans>

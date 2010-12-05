@@ -23,11 +23,33 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0
  */
 public class Chat {
-    private MessagingTemplate messagingTemplate = new MessagingTemplate();
-    private MessageChannel rosterChannel;
-    private MessageChannel messageChannel;
-    final private ConcurrentHashMap<String, String> users = new ConcurrentHashMap<String, String>();
-    final private List<String> chatMessages = new ArrayList<String>();
+    
+	private MessagingTemplate messagingTemplate = new MessagingTemplate();
+
+	private MessageChannel rosterChannel;
+
+	private MessageChannel messageChannel;
+
+	private MessageChannel directMessageChannel ;
+
+	final private ConcurrentHashMap<String, String> users = new ConcurrentHashMap<String, String>();
+
+	final private List<String> chatMessages = new ArrayList<String>();
+
+	/**
+	 * cleans up all chat state so we can reset / retest
+	 */
+	public void reset (){
+		this.users.clear();
+		this.chatMessages.clear();
+	}
+
+	/**
+	 * channel on which direct messages should be issued
+	 */
+	public void setDirectMessageChannel(MessageChannel directMessageChannel) {
+		this.directMessageChannel = directMessageChannel;
+	}
 
     /**
      * this channel is used to route messages concerning new members joining a chat
@@ -83,7 +105,7 @@ public class Chat {
     public void directMessage(String user, String msg) {
         String sessionId = this.users.get(user);
         Message<?> msgObject = MessageBuilder.withPayload(msg).setHeader(DwrMessageHeaders.DWR_TARGET_SESSION_ID, sessionId).build();
-        this.messagingTemplate.send(this.messageChannel, msgObject);
+        this.messagingTemplate.send(this.directMessageChannel, msgObject);
     }
 
     /**
