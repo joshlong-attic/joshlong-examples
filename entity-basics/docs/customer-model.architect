@@ -4,102 +4,138 @@
  <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
  <project-data-sources>
   <data-source id="DS0">
+   <property key="Logical" value="crm" />
+   <property key="Connection Type" value="PostgreSQL" />
+   <property key="JDBC URL" value="jdbc:postgresql://127.0.0.1:5432/crm" />
+   <property key="UID" value="crm" />
+   <property key="PWD" value="crm" />
+   <property key="ca.sqlpower.architect.etl.kettle.database" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.port" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.hostname" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.login" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
+  </data-source>
+  <data-source id="DS0">
+   <property key="Connection Type" value="PostgreSQL" />
+   <property key="Logical" value="crm" />
+   <property key="JDBC URL" value="jdbc:postgresql://127.0.0.1:5432/crm" />
+   <property key="UID" value="crm" />
+   <property key="PWD" value="crm" />
+   <property key="ca.sqlpower.architect.etl.kettle.database" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.port" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.hostname" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.login" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
   </data-source>
  </project-data-sources>
  <source-databases>
+  <database id="DB0" populated="true" dbcs-ref="DS0" name="crm" physicalName="crm" >
+   <catalog id="CAT1" populated="true" name="crm" nativeTerm="database" physicalName="crm" >
+    <schema id="SCH2" populated="true" name="information_schema" nativeTerm="schema" physicalName="information_schema" >
+    </schema>
+    <schema id="SCH3" populated="true" name="pg_catalog" nativeTerm="schema" physicalName="pg_catalog" >
+    </schema>
+    <schema id="SCH4" populated="true" name="pg_toast_temp_1" nativeTerm="schema" physicalName="pg_toast_temp_1" >
+    </schema>
+    <schema id="SCH5" populated="true" name="public" nativeTerm="schema" physicalName="public" >
+    </schema>
+   </catalog>
+   <relationships>
+   </relationships>
+  </database>
  </source-databases>
  <target-database id="ppdb" dbcs-ref="DS0">
-  <table id="TAB1" populated="true" name="customer" objectType="TABLE" physicalName="New_Table" remarks="" >
-   <folder id="FOL2" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL3" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_id_seq" defaultValue="" name="id" nullable="0" physicalName="" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="4" />
-    <column id="COL4" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_first_name_seq" defaultValue="" name="first_name" nullable="0" physicalName="" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
-    <column id="COL5" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_last_name_seq" defaultValue="" name="last_name" nullable="0" physicalName="" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+  <table id="TAB7" populated="true" name="customer" objectType="TABLE" physicalName="customer" remarks="" >
+   <folder id="FOL8" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL9" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL10" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_first_name_seq" defaultValue="" name="first_name" nullable="0" physicalName="first_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL11" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_last_name_seq" defaultValue="" name="last_name" nullable="0" physicalName="last_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
    </folder>
-   <folder id="FOL6" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   <folder id="FOL12" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
    </folder>
-   <folder id="FOL7" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   <folder id="FOL13" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
    </folder>
-   <folder id="FOL8" populated="true" name="Indices" physicalName="Indices" type="4" >
-    <index id="IDX9" populated="true" clustered="false" name="New_Table_pk" physicalName="New_Table_pk" primaryKeyIndex="true" unique="true" >
-     <index-column id="IDC10" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL3" name="id" physicalName="id" />
+   <folder id="FOL14" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX15" populated="true" clustered="false" name="customer_pk" physicalName="customer_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC16" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL9" name="id" physicalName="id" />
     </index>
    </folder>
   </table>
-  <table id="TAB11" populated="true" name="order" objectType="TABLE" physicalName="New_Table" remarks="" >
-   <folder id="FOL12" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL13" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_id_seq" defaultValue="" name="id" nullable="0" physicalName="" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="4" />
-    <column id="COL14" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_total_seq" defaultValue="" name="total" nullable="0" physicalName="" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
-    <column id="COL15" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_customer_id_seq" defaultValue="" name="customer_id" nullable="0" physicalName="" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+  <table id="TAB17" populated="true" name="purchase" objectType="TABLE" physicalName="purchase" remarks="" >
+   <folder id="FOL18" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL19" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
+    <column id="COL20" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_total_seq" defaultValue="" name="total" nullable="0" physicalName="total" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
+    <column id="COL21" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_customer_id_seq" defaultValue="" name="customer_id" nullable="0" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
    </folder>
-   <folder id="FOL16" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   <folder id="FOL22" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
    </folder>
-   <folder id="FOL17" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   <folder id="FOL23" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
    </folder>
-   <folder id="FOL18" populated="true" name="Indices" physicalName="Indices" type="4" >
-    <index id="IDX19" populated="true" clustered="false" name="New_Table_pk" physicalName="New_Table_pk" primaryKeyIndex="true" unique="true" >
-     <index-column id="IDC20" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL13" name="id" physicalName="id" />
+   <folder id="FOL24" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX25" populated="true" clustered="false" name="purchase_pk" physicalName="purchase_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC26" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL19" name="id" physicalName="id" />
     </index>
    </folder>
   </table>
-  <table id="TAB21" populated="true" name="line_item" objectType="TABLE" physicalName="New_Table" remarks="" >
-   <folder id="FOL22" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL23" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_id_seq" defaultValue="" name="id" nullable="0" physicalName="" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="4" />
-    <column id="COL24" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_product_id_seq" defaultValue="" name="product_id" nullable="0" physicalName="" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
-    <column id="COL25" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_order_id_seq" defaultValue="" name="order_id" nullable="0" physicalName="" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+  <table id="TAB27" populated="true" name="line_item" objectType="TABLE" physicalName="line_item" remarks="" >
+   <folder id="FOL28" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL29" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL30" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_product_id_seq" defaultValue="" name="product_id" nullable="0" physicalName="product_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL31" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_purchase_id_seq" defaultValue="" name="purchase_id" nullable="0" physicalName="purchase_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
    </folder>
-   <folder id="FOL26" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   <folder id="FOL32" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
    </folder>
-   <folder id="FOL27" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   <folder id="FOL33" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
    </folder>
-   <folder id="FOL28" populated="true" name="Indices" physicalName="Indices" type="4" >
-    <index id="IDX29" populated="true" clustered="false" name="New_Table_pk" physicalName="New_Table_pk" primaryKeyIndex="true" unique="true" >
-     <index-column id="IDC30" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL23" name="id" physicalName="id" />
+   <folder id="FOL34" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX35" populated="true" clustered="false" name="line_item_pk" physicalName="line_item_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC36" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL29" name="id" physicalName="id" />
     </index>
    </folder>
   </table>
-  <table id="TAB31" populated="true" name="product" objectType="TABLE" physicalName="New_Table" remarks="
+  <table id="TAB37" populated="true" name="product" objectType="TABLE" physicalName="product" remarks="
 " >
-   <folder id="FOL32" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL33" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_id_seq" defaultValue="" name="id" nullable="0" physicalName="" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="4" />
-    <column id="COL34" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_description_seq" defaultValue="" name="description" nullable="1" physicalName="" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
-    <column id="COL35" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_name_seq" defaultValue="" name="name" nullable="0" physicalName="" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
-    <column id="COL36" populated="true" autoIncrement="false" autoIncrementSequenceName="New_Table_price_seq" defaultValue="" name="price" nullable="0" physicalName="" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
+   <folder id="FOL38" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL39" populated="true" autoIncrement="false" autoIncrementSequenceName="product_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL40" populated="true" autoIncrement="false" autoIncrementSequenceName="product_description_seq" defaultValue="" name="description" nullable="1" physicalName="description" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL41" populated="true" autoIncrement="false" autoIncrementSequenceName="product_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL42" populated="true" autoIncrement="false" autoIncrementSequenceName="product_price_seq" defaultValue="" name="price" nullable="0" physicalName="price" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
    </folder>
-   <folder id="FOL37" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   <folder id="FOL43" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
    </folder>
-   <folder id="FOL38" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   <folder id="FOL44" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
    </folder>
-   <folder id="FOL39" populated="true" name="Indices" physicalName="Indices" type="4" >
-    <index id="IDX40" populated="true" clustered="false" name="New_Table_pk" physicalName="New_Table_pk" primaryKeyIndex="true" unique="true" >
-     <index-column id="IDC41" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL33" name="id" physicalName="id" />
+   <folder id="FOL45" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX46" populated="true" clustered="false" name="product_pk" physicalName="product_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC47" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL39" name="id" physicalName="id" />
     </index>
    </folder>
   </table>
   <relationships>
-   <relationship id="REL42" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB11" fkCardinality="7" identifying="false" name="order_customer_fk" physicalName="order_customer_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="3" >
-    <column-mapping id="CMP43" populated="true" fk-column-ref="COL15" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL3" />
+   <relationship id="REL48" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB17" fkCardinality="7" identifying="false" name="order_customer_fk" physicalName="order_customer_fk" pk-table-ref="TAB7" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP49" populated="true" fk-column-ref="COL21" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
    </relationship>
-   <relationship id="REL44" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB21" fkCardinality="6" identifying="false" name="New_Table_New_Table_fk" physicalName="New_Table_New_Table_fk" pk-table-ref="TAB11" pkCardinality="2" updateRule="3" >
-    <column-mapping id="CMP45" populated="true" fk-column-ref="COL25" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL13" />
+   <relationship id="REL50" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB27" fkCardinality="6" identifying="false" name="New_Table_New_Table_fk" physicalName="new_table_new_table_fk" pk-table-ref="TAB17" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP51" populated="true" fk-column-ref="COL31" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL19" />
    </relationship>
-   <reference ref-id="REL42" />
-   <relationship id="REL46" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB21" fkCardinality="7" identifying="false" name="line_item_product_fk" physicalName="line_item_product_fk" pk-table-ref="TAB31" pkCardinality="2" updateRule="3" >
-    <column-mapping id="CMP47" populated="true" fk-column-ref="COL24" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL33" />
+   <reference ref-id="REL48" />
+   <relationship id="REL52" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB27" fkCardinality="7" identifying="false" name="line_item_product_fk" physicalName="line_item_product_fk" pk-table-ref="TAB37" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP53" populated="true" fk-column-ref="COL30" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL39" />
    </relationship>
-   <reference ref-id="REL44" />
-   <reference ref-id="REL46" />
+   <reference ref-id="REL50" />
+   <reference ref-id="REL52" />
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.GenericDDLGenerator" allow-connection="true"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="public"> </ddl-generator>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
  <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
-  <table-pane table-ref="TAB1" x="436" y="97" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB11" x="645" y="222" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB21" x="430" y="332" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB31" x="661" y="485" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-link relationship-ref="REL46" pk-x="48" pk-y="0" fk-x="95" fk-y="75" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
-  <table-link relationship-ref="REL44" pk-x="10" pk-y="75" fk-x="145" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
-  <table-link relationship-ref="REL42" pk-x="142" pk-y="75" fk-x="11" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-pane table-ref="TAB7" x="572" y="156" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB17" x="504" y="365" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB27" x="251" y="405" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB37" x="343" y="141" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-link relationship-ref="REL52" pk-x="20" pk-y="90" fk-x="140" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL50" pk-x="0" pk-y="10" fk-x="167" fk-y="65" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL48" pk-x="139" pk-y="75" fk-x="34" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
  </play-pen>
  <profiles topNCount="10">
   </profiles>

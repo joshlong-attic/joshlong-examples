@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<architect-project version="1.0" appversion="0.9.13">
+ <project-name>quietriot</project-name>
+ <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
+ <project-data-sources>
+  <data-source id="DS0">
+   <property key="Connection Type" value="PostgreSQL" />
+   <property key="Logical" value="quietriot_localhost" />
+   <property key="JDBC URL" value="jdbc:postgresql://quietriotdb:5432/quietriot" />
+   <property key="UID" value="quietriot" />
+   <property key="PWD" value="quietriot" />
+   <property key="ca.sqlpower.architect.etl.kettle.database" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.port" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.hostname" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.login" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
+  </data-source>
+  <data-source id="DS2">
+   <property key="Connection Type" value="PostgreSQL" />
+   <property key="Logical" value="quietriot" />
+   <property key="JDBC URL" value="jdbc:postgresql://hulk.jl:5432/quietriot" />
+   <property key="UID" value="quietriot" />
+   <property key="PWD" value="quietriot" />
+   <property key="ca.sqlpower.architect.etl.kettle.database" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.port" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.hostname" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.login" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
+  </data-source>
+ </project-data-sources>
+ <source-databases>
+  <database id="DB0" populated="true" dbcs-ref="DS2" name="quietriot" physicalName="quietriot" >
+   <catalog id="CAT1" populated="true" name="quietriot" nativeTerm="database" physicalName="quietriot" >
+    <schema id="SCH2" populated="true" name="information_schema" nativeTerm="schema" physicalName="information_schema" >
+    </schema>
+    <schema id="SCH3" populated="true" name="pg_catalog" nativeTerm="schema" physicalName="pg_catalog" >
+    </schema>
+    <schema id="SCH4" populated="true" name="pg_toast_temp_1" nativeTerm="schema" physicalName="pg_toast_temp_1" >
+    </schema>
+    <schema id="SCH5" populated="true" name="public" nativeTerm="schema" physicalName="public" >
+    </schema>
+   </catalog>
+   <relationships>
+   </relationships>
+  </database>
+ </source-databases>
+ <target-database id="ppdb" dbcs-ref="DS0">
+  <table id="TAB7" populated="true" name="promoter" objectType="TABLE" physicalName="promoter" remarks="" >
+   <folder id="FOL8" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL9" populated="true" autoIncrement="true" autoIncrementSequenceName="promoter_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL10" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_crew_name_seq" defaultValue="" name="crew_name" nullable="0" physicalName="crew_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL11" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL12" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL13" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX14" populated="true" clustered="false" name="promoter_pk" physicalName="promoter_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC15" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL9" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB16" populated="true" name="live_event" objectType="TABLE" physicalName="live_event" remarks="this stores the actual events themselves. Eventually, we will add full text columns to this to make it work in the search" >
+   <folder id="FOL17" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL18" populated="true" autoIncrement="true" autoIncrementSequenceName="live_event_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="5" remarks="" scale="0" type="-5" />
+    <column id="COL19" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_date_of_live_event_seq" defaultValue="" name="date_of_event" nullable="1" physicalName="date_of_event" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL20" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_state_seq" defaultValue="" name="state" nullable="0" physicalName="state" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL21" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_promoter_id_seq" defaultValue="" name="promoter_id" nullable="1" physicalName="promoter_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL22" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_sale_start_seq" defaultValue="" name="sale_start" nullable="1" physicalName="sale_start" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL23" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_sale_stop_seq" defaultValue="" name="sale_stop" nullable="1" physicalName="sale_stop" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL24" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_site_admin_id_seq" defaultValue="" name="site_admin_id" nullable="1" physicalName="site_admin_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL25" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_customer_id_seq" defaultValue="" name="customer_id" nullable="1" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL26" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_zipcode_seq" defaultValue="" name="zipcode" nullable="1" physicalName="zipcode" precision="15" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL27" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_doors_open_timestamp_seq" defaultValue="" name="doors_open_timestamp" nullable="1" physicalName="doors_open_timestamp" precision="10" referenceCount="1" remarks="" scale="0" type="93" />
+    <column id="COL28" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_doors_close_timestamp_seq" defaultValue="" name="doors_close_timestamp" nullable="1" physicalName="doors_close_timestamp" precision="10" referenceCount="1" remarks="" scale="0" type="93" />
+    <column id="COL29" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_venue_name_seq" defaultValue="" name="venue_name" nullable="1" physicalName="venue_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL30" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_stop_sales_threshold_seq" defaultValue="" name="stop_sales_threshold" nullable="1" physicalName="stop_sales_threshold" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL31" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_should_stop_sales_seq" defaultValue="" name="should_stop_sales" nullable="1" physicalName="should_stop_sales" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL32" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_country_seq" defaultValue="" name="country" nullable="0" physicalName="country" precision="3" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL33" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_geo_key_seq" defaultValue="" name="geo_key" nullable="1" physicalName="geo_key" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL34" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_will_call_recipient_email_seq" defaultValue="" name="will_call_recipient_email" nullable="1" physicalName="will_call_recipient_email" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL35" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_will_call_recipient_fax_seq" defaultValue="" name="will_call_recipient_fax" nullable="1" physicalName="will_call_recipient_fax" precision="20" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL36" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_date_to_send_will_call_list_seq" defaultValue="" name="date_to_send_will_call_list" nullable="1" physicalName="date_to_send_will_call_list" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL37" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_talent_lineup_seq" defaultValue="" name="talent_lineup" nullable="1" physicalName="talent_lineup" precision="500" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL38" populated="true" autoIncrement="false" autoIncrementSequenceName="live_event_promoter_payment_profile_id_seq" defaultValue="" name="promoter_payment_profile_id" nullable="0" physicalName="promoter_payment_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL39" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL40" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL41" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX42" populated="true" clustered="false" name="live_event_pk" physicalName="live_event_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC43" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL18" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB44" populated="true" name="promoter_payment_profile" objectType="TABLE" physicalName="promoter_payment_profile" remarks="" >
+   <folder id="FOL45" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL46" populated="true" autoIncrement="true" autoIncrementSequenceName="promoter_payment_profile_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL47" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_address2_seq" defaultValue="" name="address2" nullable="0" physicalName="address2" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL48" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_address_seq" defaultValue="" name="address" nullable="0" physicalName="address" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL49" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_city_seq" defaultValue="" name="city" nullable="0" physicalName="city" precision="256" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL50" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_full_name_seq" defaultValue="" name="full_name" nullable="0" physicalName="full_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL51" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_authorized_seq" defaultValue="" name="authorized" nullable="0" physicalName="authorized" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL52" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_authorized_date_seq" defaultValue="" name="authorized_date" nullable="1" physicalName="authorized_date" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL53" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_use_as_default_for_all_live_events_seq" defaultValue="" name="use_as_default_for_all_live_events" nullable="0" physicalName="use_as_default_for_all_live_events" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL54" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_zip_code_seq" defaultValue="" name="zip_code" nullable="0" physicalName="zip_code" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL55" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_promoter_id_seq" defaultValue="" name="promoter_id" nullable="0" physicalName="promoter_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL56" populated="true" autoIncrement="false" autoIncrementSequenceName="promoter_payment_profile_state_seq" defaultValue="" name="state" nullable="0" physicalName="state" precision="2" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL57" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL58" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL59" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX60" populated="true" clustered="false" name="promoter_payment_profile_pk" physicalName="promoter_payment_profile_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC61" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL46" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB62" populated="true" name="ticket_profile" objectType="TABLE" physicalName="ticket_profile" remarks="" >
+   <folder id="FOL63" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL64" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
+    <column id="COL65" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_limit_seq" defaultValue="" name="limit_amount" nullable="0" physicalName="limit_amount" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL66" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_live_event_id_seq" defaultValue="" name="live_event_id" nullable="0" physicalName="live_event_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL67" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_date_goal_met_seq" defaultValue="" name="date_goal_met" nullable="1" physicalName="date_goal_met" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL68" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_description_seq" defaultValue="" name="description" nullable="1" physicalName="description" precision="10000" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL69" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_title_seq" defaultValue="" name="title" nullable="0" physicalName="title" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL70" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL71" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL72" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX73" populated="true" clustered="false" name="ticket_profile_pk" physicalName="ticket_profile_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC74" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL64" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB75" populated="true" name="line_item" objectType="TABLE" physicalName="line_item" remarks="" >
+   <folder id="FOL76" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL77" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="5" remarks="" scale="0" type="-5" />
+    <column id="COL78" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_ticket_profile_id_seq" defaultValue="" name="ticket_profile_id" nullable="0" physicalName="ticket_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL79" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_quantity_seq" defaultValue="" name="quantity" nullable="0" physicalName="quantity" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL80" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_customer_order_id_seq" defaultValue="" name="customer_order_id" nullable="0" physicalName="customer_order_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL81" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL82" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL83" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX84" populated="true" clustered="false" name="line_item_pk" physicalName="line_item_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC85" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL77" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB86" populated="true" name="customer" objectType="TABLE" physicalName="customer" remarks="" >
+   <folder id="FOL87" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL88" populated="true" autoIncrement="true" autoIncrementSequenceName="customer_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL89" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL90" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL91" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX92" populated="true" clustered="false" name="customer_pk" physicalName="customer_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC93" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL88" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB94" populated="true" name="payment_profile" objectType="TABLE" physicalName="payment_profile" remarks="" >
+   <folder id="FOL95" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL96" populated="true" autoIncrement="true" autoIncrementSequenceName="payment_profile_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="4" remarks="" scale="0" type="-5" />
+    <column id="COL97" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_type_seq" defaultValue="" name="type" nullable="0" physicalName="type" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL98" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_customer_id_seq" defaultValue="" name="customer_id" nullable="1" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL99" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_payment_profile_type_fk_seq" defaultValue="" name="payment_type_id" nullable="0" physicalName="payment_type_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL100" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_expiration_year_seq" defaultValue="" name="expiration_year" nullable="0" physicalName="expiration_year" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL101" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_expiration_month_seq" defaultValue="" name="expiration_month" nullable="0" physicalName="expiration_month" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL102" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_code_seq" defaultValue="" name="code" nullable="0" physicalName="code" precision="6" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL103" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_profile_account_no_seq" defaultValue="" name="account_no" nullable="0" physicalName="account_no" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL104" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL105" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL106" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX107" populated="true" clustered="false" name="payment_profile_pk" physicalName="payment_profile_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC108" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL96" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB109" populated="true" name="payment_type" objectType="TABLE" physicalName="payment_type" remarks="this will likely only have one row : credit card" >
+   <folder id="FOL110" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL111" populated="true" autoIncrement="true" autoIncrementSequenceName="payment_type_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL112" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_type_type_seq" defaultValue="" name="type" nullable="0" physicalName="type" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL113" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL114" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL115" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX116" populated="true" clustered="false" name="payment_type_pk" physicalName="payment_type_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC117" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL111" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB118" populated="true" name="customer_order" objectType="TABLE" physicalName="customer_order" remarks=" " >
+   <folder id="FOL119" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL120" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_order_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL121" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_order_customer_id_seq" defaultValue="" name="customer_id" nullable="0" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL122" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_order_date_started_seq" defaultValue="" name="date_started" nullable="0" physicalName="date_started" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL123" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_order_state_seq" defaultValue="" name="state" nullable="0" physicalName="state" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL124" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_order_date_completed_seq" defaultValue="" name="date_completed" nullable="0" physicalName="date_completed" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+   </folder>
+   <folder id="FOL125" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL126" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL127" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX128" populated="true" clustered="false" name="customer_order_pk" physicalName="customer_order_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC129" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL120" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB130" populated="true" name="payment" objectType="TABLE" physicalName="payment" remarks="" >
+   <folder id="FOL131" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL132" populated="true" autoIncrement="true" autoIncrementSequenceName="payment_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL133" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_created_seq" defaultValue="" name="created" nullable="0" physicalName="created" precision="10" referenceCount="1" remarks="" scale="0" type="91" />
+    <column id="COL134" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_customer_order_id_seq" defaultValue="" name="customer_order_id" nullable="0" physicalName="customer_order_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL135" populated="true" autoIncrement="false" autoIncrementSequenceName="payment_payment_profile_id_seq" defaultValue="" name="payment_profile_id" nullable="0" physicalName="payment_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL136" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL137" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL138" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX139" populated="true" clustered="false" name="payment_pk" physicalName="payment_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC140" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL132" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB141" populated="true" name="site_admin" objectType="TABLE" physicalName="site_admin" remarks="" >
+   <folder id="FOL142" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL143" populated="true" autoIncrement="true" autoIncrementSequenceName="site_admin_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL144" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL145" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL146" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX147" populated="true" clustered="false" name="site_admin_pk" physicalName="site_admin_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC148" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL143" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB149" populated="true" name="user_credentials" objectType="TABLE" physicalName="user_credentials" remarks="" >
+   <folder id="FOL150" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL151" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="5" remarks="" scale="0" type="-5" />
+    <column id="COL152" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_first_name_seq" defaultValue="" name="first_name" nullable="0" physicalName="first_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL153" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_last_name_seq" defaultValue="" name="last_name" nullable="0" physicalName="last_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL154" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_email_seq" defaultValue="" name="email" nullable="0" physicalName="email" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL155" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_passphrase_seq" defaultValue="" name="passphrase" nullable="0" physicalName="passphrase" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL156" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_site_admin_id_seq" defaultValue="" name="site_admin_id" nullable="1" physicalName="site_admin_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL157" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_customer_id_seq" defaultValue="" name="customer_id" nullable="1" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL158" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_photographer_id_seq" defaultValue="" name="photographer_id" nullable="1" physicalName="photographer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL159" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_active_seq" defaultValue="" name="active" nullable="0" physicalName="active" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL160" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_user_name_seq" defaultValue="" name="user_name" nullable="0" physicalName="user_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL161" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_promoter_id_seq" defaultValue="" name="promoter_id" nullable="1" physicalName="promoter_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL162" populated="true" autoIncrement="false" autoIncrementSequenceName="user_credentials_provide_ftp_account_seq" defaultValue="" name="provide_ftp_account" nullable="0" physicalName="provide_ftp_account" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+   </folder>
+   <folder id="FOL163" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL164" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL165" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX166" populated="true" clustered="false" name="user_credentials_pk" physicalName="user_credentials_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC167" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL151" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB168" populated="true" name="photographer" objectType="TABLE" physicalName="photographer" remarks="" >
+   <folder id="FOL169" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL170" populated="true" autoIncrement="true" autoIncrementSequenceName="photographer_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL171" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL172" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL173" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX174" populated="true" clustered="false" name="photographer_pk" physicalName="photographer_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC175" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL170" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB176" populated="true" name="tag" objectType="TABLE" physicalName="tag" remarks="" >
+   <folder id="FOL177" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL178" populated="true" autoIncrement="true" autoIncrementSequenceName="tag_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL179" populated="true" autoIncrement="false" autoIncrementSequenceName="tag_tag_seq" defaultValue="" name="tag" nullable="0" physicalName="tag" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL180" populated="true" autoIncrement="false" autoIncrementSequenceName="tag_meta_tag_seq" defaultValue="" name="meta_tag" nullable="0" physicalName="meta_tag" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL181" populated="true" autoIncrement="false" autoIncrementSequenceName="tag_clean_tag_seq" defaultValue="" name="clean_tag" nullable="0" physicalName="clean_tag" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL182" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL183" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL184" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX185" populated="true" clustered="false" name="tag_pk" physicalName="tag_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC186" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL178" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB187" populated="true" name="ticket_profile_tags" objectType="TABLE" physicalName="ticket_profile_tags" remarks="" >
+   <folder id="FOL188" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL189" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_tags_ticket_profile_id_seq" defaultValue="" name="ticket_profile_id" nullable="0" physicalName="ticket_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL190" populated="true" autoIncrement="false" autoIncrementSequenceName="ticket_profile_tags_tag_id_seq" defaultValue="" name="tag_id" nullable="0" physicalName="tag_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL191" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL192" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL193" populated="true" name="Indices" physicalName="Indices" type="4" >
+   </folder>
+  </table>
+  <table id="TAB194" populated="true" name="managed_file" objectType="TABLE" physicalName="managed_file" remarks="" >
+   <folder id="FOL195" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL196" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
+    <column id="COL197" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_extension_seq" defaultValue="" name="extension" nullable="0" physicalName="extension" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL198" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_byte_size_seq" defaultValue="" name="byte_size" nullable="0" physicalName="byte_size" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
+    <column id="COL199" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_original_file_name_seq" defaultValue="" name="original_file_name" nullable="0" physicalName="original_file_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL200" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_ready_seq" defaultValue="" name="ready" nullable="0" physicalName="ready" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL201" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_id_seq" defaultValue="" name="storage_node_id" nullable="1" physicalName="storage_node_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL202" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_mount_prefix_seq" defaultValue="" name="mount_prefix" nullable="0" physicalName="mount_prefix" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL203" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_priority_seq" defaultValue="" name="priority" nullable="0" physicalName="priority" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL204" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_upload_bundle_id_seq" defaultValue="" name="upload_bundle_id" nullable="1" physicalName="upload_bundle_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL205" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL206" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL207" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX208" populated="true" clustered="false" name="managed_file_pk" physicalName="managed_file_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC209" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL196" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB210" populated="true" name="storage_node" objectType="TABLE" physicalName="storage_node" remarks="" >
+   <folder id="FOL211" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL212" populated="true" autoIncrement="true" autoIncrementSequenceName="storage_node_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL213" populated="true" autoIncrement="false" autoIncrementSequenceName="managed_file_priority_seq" defaultValue="" name="priority" nullable="0" physicalName="priority" precision="10" referenceCount="1" remarks="" scale="0" type="4" />
+    <column id="COL214" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_offline_seq" defaultValue="" name="offline" nullable="0" physicalName="offline" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL215" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_ready_seq" defaultValue="" name="ready" nullable="0" physicalName="ready" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+    <column id="COL216" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_bytes_used_seq" defaultValue="" name="bytes_used" nullable="0" physicalName="bytes_used" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
+    <column id="COL217" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_mount_prefix_seq" defaultValue="" name="mount_prefix" nullable="0" physicalName="mount_prefix" precision="10" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL218" populated="true" autoIncrement="false" autoIncrementSequenceName="storage_node_total_byte_capacity_seq" defaultValue="" name="total_byte_capacity" nullable="0" physicalName="total_byte_capacity" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
+   </folder>
+   <folder id="FOL219" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL220" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL221" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX222" populated="true" clustered="false" name="storage_node_pk" physicalName="storage_node_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC223" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL212" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB224" populated="true" name="photo" objectType="TABLE" physicalName="photo" remarks="" >
+   <folder id="FOL225" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL226" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL227" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_raw_managed_file_id_seq" defaultValue="" name="raw_managed_file_id" nullable="1" physicalName="raw_managed_file_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL228" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_thumb_managed_file_id_seq" defaultValue="" name="thumb_managed_file_id" nullable="1" physicalName="thumb_managed_file_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL229" populated="true" autoIncrement="false" autoIncrementSequenceName="high_resolution_managed_file_id_seq" defaultValue="" name="high_resolution_managed_file_id" nullable="1" physicalName="high_resolution_managed_file_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL230" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_owning_photo_album_id_seq" defaultValue="" name="owning_photo_album_id" nullable="0" physicalName="owning_photo_album_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL231" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_status_seq" defaultValue="" name="status" nullable="0" physicalName="status" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL232" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_medium_resolution_managed_file_id_seq" defaultValue="" name="medium_resolution_managed_file_id" nullable="1" physicalName="medium_resolution_managed_file_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL233" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_high_resolution_original_managed_file_id_seq" defaultValue="" name="high_resolution_original_managed_file_id" nullable="1" physicalName="high_resolution_original_managed_file_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL234" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL235" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL236" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX237" populated="true" clustered="false" name="photo_pk" physicalName="photo_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC238" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL226" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB239" populated="true" name="photo_album" objectType="TABLE" physicalName="photo_album" remarks="" >
+   <folder id="FOL240" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL241" populated="true" autoIncrement="true" autoIncrementSequenceName="photo_album_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL242" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_album_title_seq" defaultValue="" name="title" nullable="0" physicalName="title" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL243" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_album_user_credentials_id_seq" defaultValue="" name="user_credentials_id" nullable="1" physicalName="user_credentials_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL244" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_album_ticket_profile_id_seq" defaultValue="" name="ticket_profile_id" nullable="1" physicalName="ticket_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL245" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL246" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL247" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX248" populated="true" clustered="false" name="photo_album_pk" physicalName="photo_album_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC249" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL241" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB250" populated="true" name="photo_tags" objectType="TABLE" physicalName="photo_tags" remarks="" >
+   <folder id="FOL251" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL252" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_tags_tag_id_seq" defaultValue="" name="tag_id" nullable="0" physicalName="tag_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL253" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_New_Column_seq" defaultValue="" name="photo_id" nullable="0" physicalName="photo_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL254" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL255" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL256" populated="true" name="Indices" physicalName="Indices" type="4" >
+   </folder>
+  </table>
+  <table id="TAB257" populated="true" name="price_level" objectType="TABLE" physicalName="price_level" remarks="" >
+   <folder id="FOL258" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL259" populated="true" autoIncrement="true" autoIncrementSequenceName="price_level_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL260" populated="true" autoIncrement="false" autoIncrementSequenceName="price_level_ticket_profile_id_seq" defaultValue="" name="ticket_profile_id" nullable="0" physicalName="ticket_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL261" populated="true" autoIncrement="false" autoIncrementSequenceName="price_level_price_seq" defaultValue="" name="price" nullable="0" physicalName="price" precision="10" referenceCount="1" remarks="" scale="0" type="6" />
+    <column id="COL262" populated="true" autoIncrement="false" autoIncrementSequenceName="price_level_threshold_seq" defaultValue="" name="threshold" nullable="0" physicalName="threshold" precision="10" referenceCount="1" remarks="How many tickets can we seel at this price" scale="0" type="4" />
+    <column id="COL263" populated="true" autoIncrement="false" autoIncrementSequenceName="price_level_use_by_default_seq" defaultValue="" name="use_by_default" nullable="0" physicalName="use_by_default" precision="10" referenceCount="1" remarks="" scale="0" type="16" />
+   </folder>
+   <folder id="FOL264" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL265" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL266" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX267" populated="true" clustered="false" name="price_level_pk" physicalName="price_level_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC268" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL259" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB269" populated="true" name="photo_album_photos" objectType="TABLE" physicalName="photo_album_photos" remarks="" >
+   <folder id="FOL270" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL271" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_album_photos_photo_album_id_seq" defaultValue="" name="photo_album_id" nullable="0" physicalName="photo_album_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL272" populated="true" autoIncrement="false" autoIncrementSequenceName="photo_album_photos_photo_id_seq" defaultValue="" name="photo_id" nullable="0" physicalName="photo_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL273" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL274" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL275" populated="true" name="Indices" physicalName="Indices" type="4" >
+   </folder>
+  </table>
+  <table id="TAB276" populated="true" name="user_comment" objectType="TABLE" physicalName="user_comment" remarks="" >
+   <folder id="FOL277" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL278" populated="true" autoIncrement="true" autoIncrementSequenceName="user_comment_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="4" remarks="" scale="0" type="-5" />
+    <column id="COL279" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_text_user_comment_seq" defaultValue="" name="comment_text" nullable="0" physicalName="comment_text" precision="2000" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL280" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_anonymous_handle_seq" defaultValue="" name="anonymous_handle" nullable="1" physicalName="anonymous_handle" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL281" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_title_seq" defaultValue="" name="title" nullable="0" physicalName="title" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL282" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_id_seq" defaultValue="" name="parent_comment_id" nullable="1" physicalName="parent_comment_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL283" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_user_credentials_id_seq" defaultValue="" name="user_credentials_id" nullable="1" physicalName="user_credentials_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL284" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_ticket_profile_id_seq" defaultValue="" name="ticket_profile_id" nullable="1" physicalName="ticket_profile_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL285" populated="true" autoIncrement="false" autoIncrementSequenceName="user_comment_photo_id_seq" defaultValue="" name="photo_id" nullable="1" physicalName="photo_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+   </folder>
+   <folder id="FOL286" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL287" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL288" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX289" populated="true" clustered="false" name="user_comment_pk" physicalName="user_comment_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC290" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL278" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB291" populated="true" name="upload_bundle" objectType="TABLE" physicalName="upload_bundle" remarks="" >
+   <folder id="FOL292" populated="true" name="Columns" physicalName="Columns" type="1" >
+    <column id="COL293" populated="true" autoIncrement="false" autoIncrementSequenceName="upload_bundle_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
+    <column id="COL294" populated="true" autoIncrement="false" autoIncrementSequenceName="upload_bundle_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
+    <column id="COL295" populated="true" autoIncrement="false" autoIncrementSequenceName="upload_bundle_user_credentials_id_seq" defaultValue="" name="user_credentials_id" nullable="0" physicalName="user_credentials_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL296" populated="true" autoIncrement="false" autoIncrementSequenceName="upload_bundle_status_seq" defaultValue="" name="status" nullable="0" physicalName="status" precision="20" referenceCount="1" remarks="" scale="0" type="12" />
+   </folder>
+   <folder id="FOL297" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3" >
+   </folder>
+   <folder id="FOL298" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2" >
+   </folder>
+   <folder id="FOL299" populated="true" name="Indices" physicalName="Indices" type="4" >
+    <index id="IDX300" populated="true" clustered="false" name="upload_bundle_pk" physicalName="upload_bundle_pk" primaryKeyIndex="true" unique="true" >
+     <index-column id="IDC301" populated="true" ascendingOrDescending="UNSPECIFIED" column-ref="COL293" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <relationships>
+   <relationship id="REL302" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB16" fkCardinality="7" identifying="false" name="event_promoter_fk" physicalName="event_promoter_fk" pk-table-ref="TAB7" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP303" populated="true" fk-column-ref="COL21" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL304" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB149" fkCardinality="3" identifying="false" name="user_credentials_promoter_fk" physicalName="user_credentials_promoter_fk" pk-table-ref="TAB7" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP305" populated="true" fk-column-ref="COL161" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL306" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB44" fkCardinality="7" identifying="false" name="promoter_payment_profile_promoter_fk" physicalName="promoter_payment_profile_promoter_fk" pk-table-ref="TAB7" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP307" populated="true" fk-column-ref="COL55" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL308" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB62" fkCardinality="7" identifying="false" name="event_ticket_profile_event_fk" physicalName="event_ticket_profile_event_fk" pk-table-ref="TAB16" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP309" populated="true" fk-column-ref="COL66" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL18" />
+   </relationship>
+   <reference ref-id="REL302" />
+   <relationship id="REL310" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB16" fkCardinality="7" identifying="false" name="site_admin_fk" physicalName="site_admin_fk" pk-table-ref="TAB141" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP311" populated="true" fk-column-ref="COL24" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL143" />
+   </relationship>
+   <relationship id="REL312" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB16" fkCardinality="7" identifying="false" name="customer_fk" physicalName="customer_fk" pk-table-ref="TAB86" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP313" populated="true" fk-column-ref="COL25" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL88" />
+   </relationship>
+   <relationship id="REL314" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB16" fkCardinality="7" identifying="false" name="live_event_promoter_payment_profile_fk" physicalName="live_event_promoter_payment_profile_fk" pk-table-ref="TAB44" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP315" populated="true" fk-column-ref="COL38" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL46" />
+   </relationship>
+   <reference ref-id="REL314" />
+   <reference ref-id="REL306" />
+   <relationship id="REL316" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB75" fkCardinality="7" identifying="false" name="ticket_profile_line_item_fk" physicalName="ticket_profile_line_item_fk" pk-table-ref="TAB62" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP317" populated="true" fk-column-ref="COL78" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL64" />
+   </relationship>
+   <relationship id="REL318" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB187" fkCardinality="7" identifying="false" name="ticket_profile_tags_ticket_profile_fk" physicalName="ticket_profile_tags_ticket_profile_fk" pk-table-ref="TAB62" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP319" populated="true" fk-column-ref="COL189" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL64" />
+   </relationship>
+   <relationship id="REL320" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB257" fkCardinality="7" identifying="false" name="price_level_ticket_profile_fk" physicalName="price_level_ticket_profile_fk" pk-table-ref="TAB62" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP321" populated="true" fk-column-ref="COL260" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL64" />
+   </relationship>
+   <relationship id="REL322" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB239" fkCardinality="7" identifying="false" name="photo_album_ticket_profile_fk" physicalName="photo_album_ticket_profile_fk" pk-table-ref="TAB62" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP323" populated="true" fk-column-ref="COL244" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL64" />
+   </relationship>
+   <relationship id="REL324" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB276" fkCardinality="7" identifying="false" name="comment_ticket_profile_fk" physicalName="comment_ticket_profile_fk" pk-table-ref="TAB62" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP325" populated="true" fk-column-ref="COL284" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL64" />
+   </relationship>
+   <reference ref-id="REL308" />
+   <reference ref-id="REL316" />
+   <relationship id="REL326" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB75" fkCardinality="7" identifying="false" name="line_item_customer_order_fk" physicalName="line_item_customer_order_fk" pk-table-ref="TAB118" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP327" populated="true" fk-column-ref="COL80" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL120" />
+   </relationship>
+   <reference ref-id="REL312" />
+   <relationship id="REL328" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB94" fkCardinality="7" identifying="false" name="payment_user_fk" physicalName="payment_user_fk" pk-table-ref="TAB86" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP329" populated="true" fk-column-ref="COL98" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL88" />
+   </relationship>
+   <relationship id="REL330" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB118" fkCardinality="7" identifying="false" name="order_user_fk" physicalName="order_user_fk" pk-table-ref="TAB86" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP331" populated="true" fk-column-ref="COL121" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL88" />
+   </relationship>
+   <relationship id="REL332" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB149" fkCardinality="3" identifying="false" name="user_credentials_customer_fk" physicalName="user_credentials_customer_fk" pk-table-ref="TAB86" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP333" populated="true" fk-column-ref="COL157" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL88" />
+   </relationship>
+   <relationship id="REL334" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB130" fkCardinality="7" identifying="false" name="payment_payment_profile_fk" physicalName="payment_payment_profile_fk" pk-table-ref="TAB94" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP335" populated="true" fk-column-ref="COL135" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL96" />
+   </relationship>
+   <reference ref-id="REL328" />
+   <relationship id="REL336" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB94" fkCardinality="3" identifying="false" name="payment_payment_type_fk" physicalName="payment_payment_type_fk" pk-table-ref="TAB109" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP337" populated="true" fk-column-ref="COL99" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL111" />
+   </relationship>
+   <reference ref-id="REL336" />
+   <reference ref-id="REL326" />
+   <relationship id="REL338" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB130" fkCardinality="7" identifying="false" name="customer_order_payment_fk" physicalName="customer_order_payment_fk" pk-table-ref="TAB118" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP339" populated="true" fk-column-ref="COL134" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL120" />
+   </relationship>
+   <reference ref-id="REL330" />
+   <reference ref-id="REL334" />
+   <reference ref-id="REL338" />
+   <reference ref-id="REL310" />
+   <relationship id="REL340" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB149" fkCardinality="3" identifying="false" name="site_admin_site_credentials_fk" physicalName="site_admin_site_credentials_fk" pk-table-ref="TAB141" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP341" populated="true" fk-column-ref="COL156" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL143" />
+   </relationship>
+   <relationship id="REL342" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB239" fkCardinality="7" identifying="false" name="photo_album_user_credentials_fk" physicalName="photo_album_user_credentials_fk" pk-table-ref="TAB149" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP343" populated="true" fk-column-ref="COL243" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL151" />
+   </relationship>
+   <relationship id="REL344" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB276" fkCardinality="7" identifying="false" name="user_credentials_comment_fk" physicalName="user_credentials_comment_fk" pk-table-ref="TAB149" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP345" populated="true" fk-column-ref="COL283" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL151" />
+   </relationship>
+   <relationship id="REL346" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB291" fkCardinality="7" identifying="false" name="upload_bundle_user_credentials_fk" physicalName="upload_bundle_user_credentials_fk" pk-table-ref="TAB149" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP347" populated="true" fk-column-ref="COL295" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL151" />
+   </relationship>
+   <reference ref-id="REL304" />
+   <reference ref-id="REL332" />
+   <reference ref-id="REL340" />
+   <relationship id="REL348" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB149" fkCardinality="3" identifying="false" name="site_credentials_photographer_fk" physicalName="site_credentials_photographer_fk" pk-table-ref="TAB168" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP349" populated="true" fk-column-ref="COL158" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL170" />
+   </relationship>
+   <reference ref-id="REL348" />
+   <relationship id="REL350" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB187" fkCardinality="7" identifying="false" name="ticket_profile_tags_tag_fk" physicalName="ticket_profile_tags_tag_fk" pk-table-ref="TAB176" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP351" populated="true" fk-column-ref="COL190" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL178" />
+   </relationship>
+   <relationship id="REL352" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB250" fkCardinality="7" identifying="false" name="photo_tags_tag_fk" physicalName="photo_tags_tag_fk" pk-table-ref="TAB176" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP353" populated="true" fk-column-ref="COL252" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL178" />
+   </relationship>
+   <reference ref-id="REL318" />
+   <reference ref-id="REL350" />
+   <relationship id="REL354" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="3" identifying="false" name="photo_raw_managed_file_fk" physicalName="photo_raw_managed_file_fk" pk-table-ref="TAB194" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP355" populated="true" fk-column-ref="COL227" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL196" />
+   </relationship>
+   <relationship id="REL356" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="7" identifying="false" name="photo_managed_file_fk" physicalName="photo_managed_file_fk" pk-table-ref="TAB194" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP357" populated="true" fk-column-ref="COL229" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL196" />
+   </relationship>
+   <relationship id="REL358" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="7" identifying="false" name="photo_thumb_managed_file_fk" physicalName="photo_thumb_managed_file_fk" pk-table-ref="TAB194" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP359" populated="true" fk-column-ref="COL228" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL196" />
+   </relationship>
+   <relationship id="REL360" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="7" identifying="false" name="managed_file_photo_fk" physicalName="managed_file_photo_fk" pk-table-ref="TAB194" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP361" populated="true" fk-column-ref="COL232" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL196" />
+   </relationship>
+   <relationship id="REL362" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="7" identifying="false" name="managed_file_photo_fk_1" physicalName="managed_file_photo_fk_1" pk-table-ref="TAB194" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP363" populated="true" fk-column-ref="COL233" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL196" />
+   </relationship>
+   <relationship id="REL364" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB194" fkCardinality="7" identifying="false" name="storage_node_managed_file_fk" physicalName="storage_node_managed_file_fk" pk-table-ref="TAB210" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP365" populated="true" fk-column-ref="COL201" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL212" />
+   </relationship>
+   <relationship id="REL366" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB194" fkCardinality="7" identifying="false" name="managed_file_upload_bundle_fk" physicalName="managed_file_upload_bundle_fk" pk-table-ref="TAB291" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP367" populated="true" fk-column-ref="COL204" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL293" />
+   </relationship>
+   <reference ref-id="REL364" />
+   <relationship id="REL368" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB250" fkCardinality="7" identifying="false" name="photo_photo_tags_fk" physicalName="photo_photo_tags_fk" pk-table-ref="TAB224" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP369" populated="true" fk-column-ref="COL253" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL226" />
+   </relationship>
+   <relationship id="REL370" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB269" fkCardinality="7" identifying="false" name="photo_album_photos_photo_fk" physicalName="photo_album_photos_photo_fk" pk-table-ref="TAB224" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP371" populated="true" fk-column-ref="COL272" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL226" />
+   </relationship>
+   <relationship id="REL372" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB276" fkCardinality="7" identifying="false" name="comment_photo_fk" physicalName="comment_photo_fk" pk-table-ref="TAB224" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP373" populated="true" fk-column-ref="COL285" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL226" />
+   </relationship>
+   <reference ref-id="REL354" />
+   <reference ref-id="REL356" />
+   <reference ref-id="REL358" />
+   <reference ref-id="REL360" />
+   <reference ref-id="REL362" />
+   <relationship id="REL374" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB224" fkCardinality="7" identifying="false" name="photo_photo_album_fk" physicalName="photo_photo_album_fk" pk-table-ref="TAB239" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP375" populated="true" fk-column-ref="COL230" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL241" />
+   </relationship>
+   <reference ref-id="REL374" />
+   <relationship id="REL376" populated="true" deferrability="7" deleteRule="3" fk-table-ref="TAB269" fkCardinality="7" identifying="false" name="photo_album_photos_photo_album_fk" physicalName="photo_album_photos_photo_album_fk" pk-table-ref="TAB239" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP377" populated="true" fk-column-ref="COL271" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL241" />
+   </relationship>
+   <reference ref-id="REL322" />
+   <reference ref-id="REL342" />
+   <reference ref-id="REL352" />
+   <reference ref-id="REL368" />
+   <reference ref-id="REL320" />
+   <reference ref-id="REL370" />
+   <reference ref-id="REL376" />
+   <relationship id="REL378" populated="true" deferrability="7" deleteRule="0" fk-table-ref="TAB276" fkCardinality="7" identifying="false" name="comment_parent_comment_fk" physicalName="comment_parent_comment_fk" pk-table-ref="TAB276" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP379" populated="true" fk-column-ref="COL282" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL278" />
+   </relationship>
+   <reference ref-id="REL324" />
+   <reference ref-id="REL344" />
+   <reference ref-id="REL372" />
+   <reference ref-id="REL378" />
+   <reference ref-id="REL366" />
+   <reference ref-id="REL346" />
+  </relationships>
+ </target-database>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="public"> </ddl-generator>
+ <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
+ <play-pen zoom="1.0" viewportX="0" viewportY="9" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+  <table-pane table-ref="TAB7" x="19" y="72" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB16" x="50" y="224" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB44" x="373" y="25" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB62" x="83" y="741" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB75" x="386" y="583" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB86" x="685" y="2" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB94" x="731" y="410" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB109" x="377" y="255" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB118" x="677" y="128" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB130" x="364" y="406" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB141" x="1217" y="62" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB149" x="947" y="9" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB168" x="760" y="278" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB176" x="523" y="710" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB187" x="404" y="864" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB194" x="992" y="603" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB210" x="987" y="821" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB224" x="971" y="315" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB239" x="1252" y="178" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB250" x="804" y="725" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB257" x="711" y="579" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB269" x="1380" y="27" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB276" x="1375" y="434" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB291" x="1327" y="748" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-link relationship-ref="REL302" pk-x="83" pk-y="63" fk-x="78" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL308" pk-x="146" pk-y="367" fk-x="87" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL316" pk-x="175" pk-y="32" fk-x="0" fk-y="54" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL328" pk-x="80" pk-y="47" fk-x="34" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL336" pk-x="118" pk-y="62" fk-x="0" fk-y="1" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL330" pk-x="57" pk-y="47" fk-x="65" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL338" pk-x="41" pk-y="111" fk-x="142" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL334" pk-x="0" pk-y="45" fk-x="209" fk-y="49" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL340" pk-x="0" pk-y="23" fk-x="199" fk-y="76" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL332" pk-x="115" pk-y="27" fk-x="0" fk-y="20" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL348" pk-x="40" pk-y="0" fk-x="64" fk-y="223" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL310" pk-x="0" pk-y="23" fk-x="266" fk-y="27" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL312" pk-x="23" pk-y="47" fk-x="266" fk-y="68" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="20"/>
+  <table-link relationship-ref="REL304" pk-x="161" pk-y="11" fk-x="0" fk-y="94" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL350" pk-x="35" pk-y="95" fk-x="154" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL318" pk-x="175" pk-y="125" fk-x="0" fk-y="2" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL364" pk-x="111" pk-y="0" fk-x="73" fk-y="175" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL368" pk-x="2" pk-y="159" fk-x="149" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL352" pk-x="150" pk-y="46" fk-x="0" fk-y="31" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL354" pk-x="119" pk-y="0" fk-x="135" fk-y="159" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL320" pk-x="175" pk-y="59" fk-x="0" fk-y="79" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL314" pk-x="0" pk-y="133" fk-x="266" fk-y="79" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL306" pk-x="161" pk-y="31" fk-x="0" fk-y="81" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL356" pk-x="79" pk-y="0" fk-x="95" fk-y="159" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL358" pk-x="99" pk-y="0" fk-x="115" fk-y="159" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL370" pk-x="60" pk-y="0" fk-x="133" fk-y="63" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL376" pk-x="171" pk-y="0" fk-x="43" fk-y="63" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL342" pk-x="199" pk-y="196" fk-x="0" fk-y="27" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL374" pk-x="33" pk-y="95" fk-x="208" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL322" pk-x="175" pk-y="31" fk-x="0" fk-y="85" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL378" pk-x="91" pk-y="159" fk-x="0" fk-y="55" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="36"/>
+  <table-link relationship-ref="REL326" pk-x="51" pk-y="111" fk-x="125" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL344" pk-x="199" pk-y="213" fk-x="63" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="129"/>
+  <table-link relationship-ref="REL324" pk-x="175" pk-y="49" fk-x="0" fk-y="88" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL372" pk-x="338" pk-y="106" fk-x="0" fk-y="41" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL346" pk-x="151" pk-y="223" fk-x="72" fk-y="0" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL366" pk-x="0" pk-y="28" fk-x="204" fk-y="97" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL360" pk-x="89" pk-y="0" fk-x="155" fk-y="159" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL362" pk-x="59" pk-y="0" fk-x="158" fk-y="159" rLineColor="0x333333" pkLabelText="" fkLabelText="" orientation="72"/>
+ </play-pen>
+ <profiles topNCount="10">
+  </profiles>
+  <olap>
+  </olap>
+  <olap-gui>
+  </olap-gui>
+</architect-project>

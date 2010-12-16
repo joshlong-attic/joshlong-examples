@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+    <table-filter match-name="spatial_ref_sys" exclude="true"/>
+    <table-filter match-name="jbpm.*" exclude="true"/>
+    <table-filter match-name="geometry_columns" exclude="true"/>
+    <table-filter match-name="zipcodes" exclude="true"/>
+    <table-filter match-name="geo_point" exclude="true"/>
+    <table-filter match-name="state_lookup" exclude="true"/>
+    <table-filter match-name="activemq.*" exclude="true"/>
+    <table-filter match-name="ftp_user_view" exclude="true"/>
+
+    <!--
+    <table-filter match-name=".*" />
+
+    <table name=".*">
+
+        <primary-key>
+            <generator class="sequence">
+                <param name="sequence">bluevixin_seq</param>
+            </generator>
+            <key-column name="id" type="Long"/>
+        </primary-key>
+    </table>-->
+    <!--<table-filter match-name="COMMAND">--><!-- />--><!--
+        <meta attribute="extra-import">com.aviall.edi.modules.order.process.core.models.BaseModel</meta>
+        <meta attribute="extends">BaseModel</meta>
+        <meta attribute="class-description">bla blah</meta>
+    </table-filter>
+
+    <table name="COMMAND">
+        <primary-key>
+            --><!-- setting up a specific id generator for a table --><!--
+            <generator class="sequence">
+                <param name="sequence">COMMAND_SEQ</param>
+            </generator>
+
+            <key-column name="ID" type="Long"/>
+        </primary-key>
+    </table>-->
+</hibernate-reverse-engineering>
