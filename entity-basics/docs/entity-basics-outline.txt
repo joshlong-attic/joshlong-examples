@@ -1,0 +1,8 @@
+The problem 
+Various approaches
+How to solve the problem using spring-jdbc and spring-orm 
+building daos / services for managing entities
+talk about using transaction managers 
+talk about takign it to the next step 
+show how to import the project into STS
+
