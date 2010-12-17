@@ -8,21 +8,35 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springsource.examples.crm.model.Customer;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/jdbc-services.xml"})
+@ContextConfiguration(locations = {"classpath:/jpa-services.xml"})
 public class JpaDatabaseProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    @Autowired private CustomerService customerService;
 
     private String firstName = "John";
+
     private String lastName = "Doe";
 
+    @Autowired
+    private CustomerService customerService;
+
     @Test
-    public void testCreatingACustomer() throws Throwable {
-        Customer customer = customerService.createCustomer(this.firstName, this.lastName);
-        assertNotNull("the customer can't be null", customer);
+    public void testCustomerService() throws Throwable {
+        Customer customer = this.customerService.createCustomer(this.firstName, this.lastName);
+        assertNotNull(customer);
+        assertTrue(customer.getId() > 0);
+
+        Customer customer2 = this.customerService.getCustomerById( customer.getId()) ;
+        assertEquals(customer2.getFirstName(), this.firstName);
+        assertEquals(customer2.getLastName(), this.lastName);
+        assertEquals( customer.getId(), customer2.getId());
+
     }
+
+
 
 }

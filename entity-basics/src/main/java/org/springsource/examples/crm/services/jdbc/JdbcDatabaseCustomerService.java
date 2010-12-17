@@ -36,6 +36,7 @@ public class JdbcDatabaseCustomerService implements CustomerService, Initializin
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional(readOnly = true)
     public Customer getCustomerById(long id) {
         return jdbcTemplate.queryForObject(this.customerByIdQuery, this.customerRowMapper, id);
     }

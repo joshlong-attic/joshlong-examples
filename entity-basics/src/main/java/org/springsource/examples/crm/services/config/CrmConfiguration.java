@@ -26,12 +26,7 @@ public class CrmConfiguration {
     @Value("${dataSource.password}")
     private String password;
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
-        dataSourceTransactionManager.setDataSource(this.dataSource());
-        return dataSourceTransactionManager;
-    }
+
 
     @Bean
     public DataSource dataSource() {
@@ -67,18 +62,5 @@ public class CrmConfiguration {
     }
     */
 
-
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        DataSource ds = dataSource();
-        return new JdbcTemplate(ds);
-    }
-
-    @Bean
-    public JdbcDatabaseCustomerService customerService() {
-        JdbcDatabaseCustomerService jdbcDatabaseCustomerService = new JdbcDatabaseCustomerService();
-        jdbcDatabaseCustomerService.setJdbcTemplate(this.jdbcTemplate());
-        return jdbcDatabaseCustomerService;
-    }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springsource.examples.crm.model.Customer;
 
+import javax.annotation.PostConstruct;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,13 +21,10 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:/jdbc-services.xml"})
 public class JdbcDatabaseCustomerServiceTest {
 
-    // static vars we can trust
     private String firstName = "John";
+
     private String lastName = "Doe";
 
-    /**
-     * injected reference of a {@link org.springsource.examples.crm.services.jdbc.JdbcDatabaseCustomerService}
-     */
     @Autowired
     private CustomerService customerService;
 
@@ -33,9 +32,11 @@ public class JdbcDatabaseCustomerServiceTest {
     public void testCustomerService() throws Throwable {
         Customer customer = this.customerService.createCustomer(this.firstName, this.lastName);
         assertNotNull(customer);
-        assertTrue(customer.getId()>0);
+        assertTrue(customer.getId() > 0);
 
         Customer customer2 = this.customerService.getCustomerById( customer.getId()) ;
+        assertEquals(customer2.getFirstName(), this.firstName);
+        assertEquals(customer2.getLastName(), this.lastName);
         assertEquals( customer.getId(), customer2.getId());
 
     }

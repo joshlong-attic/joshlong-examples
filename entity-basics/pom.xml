@@ -22,6 +22,54 @@
         </dependency>
         <!-- Spring -->
 
+        <!-- hibernate and jPA deps -->
+        <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.1.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-cglib-repack</artifactId>
+			<version>2.1_3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+      <!--  <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate</artifactId>
+
+                <version>3.2.1.ga</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>3.2.1.ga</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-annotations</artifactId>
+                <version>3.2.1.ga</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+
+                <artifactId>hibernate-core</artifactId>
+                <version>3.3.1.GA</version>
+            </dependency>-->
+
+        <!-- database access-->
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
