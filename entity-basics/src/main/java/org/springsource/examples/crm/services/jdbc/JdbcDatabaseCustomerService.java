@@ -1,15 +1,20 @@
 package org.springsource.examples.crm.services.jdbc;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.*;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springsource.examples.crm.model.Customer;
 import org.springsource.examples.crm.services.CustomerService;
 
-import javax.annotation.PostConstruct;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
 
 /**
@@ -17,44 +22,49 @@ import java.util.Arrays;
  *
  * @author Josh Long
  */
-@Service
-public class JdbcDatabaseCustomerService implements CustomerService {
-
-    @PostConstruct
-    public void start() throws Throwable {
-        System.out.println("start()  ");
-    }
+public class JdbcDatabaseCustomerService implements CustomerService, InitializingBean {
 
     private JdbcTemplate jdbcTemplate;
+
+    @Value("${jdbc.sql.customers.queryById}")
+    private String customerByIdQuery ;
+
+    @Value("${jdbc.sql.customers.insert}")
+    private String insertCustomerQuery;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public Customer getCustomerById(long id) {
-        return jdbcTemplate.queryForObject(
-                " SELECT id, first_name, last_name FROM customer WHERE id = ? ", this.customerRowMapper, id);
+        return jdbcTemplate.queryForObject(this.customerByIdQuery, this.customerRowMapper, id);
     }
 
 
-    public Customer createCustomer(final String fn, final String ln) {
+    @Transactional
+    public Customer createCustomer(String firstName, String lastName) {
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
 
-        PreparedStatementCreatorFactory preparedStatementCreatorFactory = new PreparedStatementCreatorFactory(
-            "INSERT INTO customer( first_name, last_name) VALUES ( ? , ? )", new int[]{Types.VARCHAR,Types.VARCHAR});
+        PreparedStatementCreatorFactory preparedStatementCreatorFactory =
+                new PreparedStatementCreatorFactory(this.insertCustomerQuery, new int[]{Types.VARCHAR, Types.VARCHAR});
         preparedStatementCreatorFactory.setReturnGeneratedKeys(true);
         preparedStatementCreatorFactory.setGeneratedKeysColumnNames(new String[]{"id"});
 
-        jdbcTemplate.update( preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(fn,ln)),holder );
+        jdbcTemplate.update(preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(firstName, lastName)), holder);
 
         Number id = holder.getKey();
 
         return this.getCustomerById(id.longValue());
     }
 
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(this.jdbcTemplate, "the jdbcTemplate can't be null!");
+        Assert.notNull( this.customerByIdQuery ,"the customerByIdQuery can't be null");
+        Assert.notNull( this.insertCustomerQuery,  "the insertCustomerQuery can't be null");
+    }
 
     /**
-     * the {@link RowMapper} that handles building {@link Customer} objects
+     * shared instance of a {@link RowMapper} that knows how to build a {@link Customer} record. These objects are stateless and can be cached.
      */
     private RowMapper<Customer> customerRowMapper = new RowMapper<Customer>() {
 
@@ -65,5 +75,4 @@ public class JdbcDatabaseCustomerService implements CustomerService {
             return new Customer(id, firstName, lastName);
         }
     };
-
 }

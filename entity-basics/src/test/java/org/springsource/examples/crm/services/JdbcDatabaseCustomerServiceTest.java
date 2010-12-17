@@ -19,7 +19,8 @@ import static org.junit.Assert.*;
 public class JdbcDatabaseCustomerServiceTest   {
 
     // static vars we can trust
-    private  String firstName = "John", lastName = "Doe";
+    private  String firstName = "John" ;
+    private String lastName = "Doe";
 
     /**
      * injected reference of a {@link org.springsource.examples.crm.services.jdbc.JdbcDatabaseCustomerService}
