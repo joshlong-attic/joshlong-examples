@@ -1,6 +1,5 @@
 package org.springsource.examples.crm.services.config;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,17 +9,10 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springsource.examples.crm.services.jdbc.JdbcDatabaseCustomerService;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 @Configuration
 public class CrmConfiguration {
-
-
-    @PostConstruct
-    public void setup() throws Throwable {
-        System.out.println("Setup() " + CrmConfiguration.class.getName());
-    }
 
     @Value("${dataSource.driverClassName}")
     private String driverName;
