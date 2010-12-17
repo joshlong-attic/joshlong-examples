@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/jpa-services.xml"})
-public class JpaDatabaseProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class JpaDatabaseProductServiceTest  {
 
 
     private String firstName = "John";
@@ -36,6 +36,7 @@ public class JpaDatabaseProductServiceTest extends AbstractTransactionalJUnit4Sp
         assertEquals( customer.getId(), customer2.getId());
 
     }
+
 
 
 

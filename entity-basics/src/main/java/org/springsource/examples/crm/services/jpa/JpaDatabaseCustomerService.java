@@ -23,11 +23,10 @@ public class JpaDatabaseCustomerService implements CustomerService {
 
     @Transactional
     public Customer createCustomer(String fn, String ln) {
-        Customer c = new Customer();
-        c.setFirstName(fn);
-        c.setLastName(ln);
-        this.jpaTemplate.persist(c);
-        //this.jpaTemplate.refresh(c);
-        return c;
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName(fn);
+        newCustomer.setLastName(ln);
+        this.jpaTemplate.persist(newCustomer);
+        return newCustomer;
     }
 }
