@@ -5,9 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springsource.examples.crm.model.Customer;
 import org.springsource.examples.crm.services.CustomerService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 public class JpaDatabaseCustomerService implements CustomerService {
 
     private JpaTemplate jpaTemplate;

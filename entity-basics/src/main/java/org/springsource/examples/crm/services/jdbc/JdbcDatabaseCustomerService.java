@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springsource.examples.crm.model.Customer;
@@ -27,7 +26,7 @@ public class JdbcDatabaseCustomerService implements CustomerService, Initializin
     private JdbcTemplate jdbcTemplate;
 
     @Value("${jdbc.sql.customers.queryById}")
-    private String customerByIdQuery ;
+    private String customerByIdQuery;
 
     @Value("${jdbc.sql.customers.insert}")
     private String insertCustomerQuery;
@@ -60,8 +59,8 @@ public class JdbcDatabaseCustomerService implements CustomerService, Initializin
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(this.jdbcTemplate, "the jdbcTemplate can't be null!");
-        Assert.notNull( this.customerByIdQuery ,"the customerByIdQuery can't be null");
-        Assert.notNull( this.insertCustomerQuery,  "the insertCustomerQuery can't be null");
+        Assert.notNull(this.customerByIdQuery, "the customerByIdQuery can't be null");
+        Assert.notNull(this.insertCustomerQuery, "the insertCustomerQuery can't be null");
     }
 
     /**

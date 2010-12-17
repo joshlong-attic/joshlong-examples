@@ -3,8 +3,6 @@ package org.springsource.examples.crm.services.jpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -53,7 +51,7 @@ public class JpaConfiguration extends CrmConfiguration {
     @Bean
     public ProductService productService() {
         JpaDatabaseProductService productService = new JpaDatabaseProductService();
-        productService.setJpaTemplate( jpaTemplate());
+        productService.setJpaTemplate(jpaTemplate());
         return productService;
     }
 
@@ -61,8 +59,8 @@ public class JpaConfiguration extends CrmConfiguration {
     public CustomerOrderService customerOrderService() {
         JpaDatabaseCustomerOrderService customerOrderService = new JpaDatabaseCustomerOrderService();
         customerOrderService.setCustomerService(this.customerService());
-        customerOrderService.setProductService( this.productService() );
-        customerOrderService.setJpaTemplate( jpaTemplate());
+        customerOrderService.setProductService(this.productService());
+        customerOrderService.setJpaTemplate(jpaTemplate());
         return customerOrderService;
     }
 }

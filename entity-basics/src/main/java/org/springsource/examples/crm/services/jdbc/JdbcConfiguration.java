@@ -9,10 +9,10 @@ import org.springsource.examples.crm.services.config.CrmConfiguration;
 
 import javax.sql.DataSource;
 
-/***
+/**
  * Defines the configuration of several objects specific to our JDBC based solution
  *
- * @author  Josh Long
+ * @author Josh Long
  */
 @Configuration
 public class JdbcConfiguration extends CrmConfiguration {
