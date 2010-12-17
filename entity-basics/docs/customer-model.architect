@@ -47,7 +47,7 @@
  <target-database id="ppdb" dbcs-ref="DS0">
   <table id="TAB7" populated="true" name="customer" objectType="TABLE" physicalName="customer" remarks="" >
    <folder id="FOL8" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL9" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL9" populated="true" autoIncrement="true" autoIncrementSequenceName="customer_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
     <column id="COL10" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_first_name_seq" defaultValue="" name="first_name" nullable="0" physicalName="first_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
     <column id="COL11" populated="true" autoIncrement="false" autoIncrementSequenceName="customer_last_name_seq" defaultValue="" name="last_name" nullable="0" physicalName="last_name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
    </folder>
@@ -63,7 +63,7 @@
   </table>
   <table id="TAB17" populated="true" name="purchase" objectType="TABLE" physicalName="purchase" remarks="" >
    <folder id="FOL18" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL19" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
+    <column id="COL19" populated="true" autoIncrement="true" autoIncrementSequenceName="purchase_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="2" remarks="" scale="0" type="-5" />
     <column id="COL20" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_total_seq" defaultValue="" name="total" nullable="0" physicalName="total" precision="10" referenceCount="1" remarks="" scale="0" type="8" />
     <column id="COL21" populated="true" autoIncrement="false" autoIncrementSequenceName="purchase_customer_id_seq" defaultValue="" name="customer_id" nullable="0" physicalName="customer_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
    </folder>
@@ -79,7 +79,7 @@
   </table>
   <table id="TAB27" populated="true" name="line_item" objectType="TABLE" physicalName="line_item" remarks="" >
    <folder id="FOL28" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL29" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
+    <column id="COL29" populated="true" autoIncrement="true" autoIncrementSequenceName="line_item_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="3" remarks="" scale="0" type="-5" />
     <column id="COL30" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_product_id_seq" defaultValue="" name="product_id" nullable="0" physicalName="product_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
     <column id="COL31" populated="true" autoIncrement="false" autoIncrementSequenceName="line_item_purchase_id_seq" defaultValue="" name="purchase_id" nullable="0" physicalName="purchase_id" precision="10" referenceCount="1" remarks="" scale="0" type="-5" />
    </folder>
@@ -96,7 +96,7 @@
   <table id="TAB37" populated="true" name="product" objectType="TABLE" physicalName="product" remarks="
 " >
    <folder id="FOL38" populated="true" name="Columns" physicalName="Columns" type="1" >
-    <column id="COL39" populated="true" autoIncrement="false" autoIncrementSequenceName="product_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
+    <column id="COL39" populated="true" autoIncrement="true" autoIncrementSequenceName="product_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="10" primaryKeySeq="0" referenceCount="1" remarks="" scale="0" type="-5" />
     <column id="COL40" populated="true" autoIncrement="false" autoIncrementSequenceName="product_description_seq" defaultValue="" name="description" nullable="1" physicalName="description" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
     <column id="COL41" populated="true" autoIncrement="false" autoIncrementSequenceName="product_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="255" referenceCount="1" remarks="" scale="0" type="12" />
     <column id="COL42" populated="true" autoIncrement="false" autoIncrementSequenceName="product_price_seq" defaultValue="" name="price" nullable="0" physicalName="price" precision="10" referenceCount="1" remarks="" scale="0" type="8" />

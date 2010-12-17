@@ -1,20 +1,29 @@
-package org.springsource.examples.crm.services;
+package org.springsource.examples.crm.services.jdbc;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Service;
 import org.springsource.examples.crm.model.Customer;
+import org.springsource.examples.crm.services.CustomerService;
 
+import javax.annotation.PostConstruct;
 import java.sql.*;
+import java.util.Arrays;
 
 /**
- * simple implementation of {@link CustomerService} that uses straight JDBC
+ * simple implementation of {@link org.springsource.examples.crm.services.CustomerService} that uses straight JDBC
  *
  * @author Josh Long
  */
+@Service
 public class JdbcDatabaseCustomerService implements CustomerService {
 
+    @PostConstruct
+    public void start() throws Throwable {
+        System.out.println("start()  ");
+    }
 
     private JdbcTemplate jdbcTemplate;
 
@@ -22,29 +31,25 @@ public class JdbcDatabaseCustomerService implements CustomerService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
     public Customer getCustomerById(long id) {
         return jdbcTemplate.queryForObject(
                 " SELECT id, first_name, last_name FROM customer WHERE id = ? ", this.customerRowMapper, id);
     }
 
-    @Override
-    public Customer createCustomer( final String fn, final String ln) {
 
-        KeyHolder holder = new GeneratedKeyHolder();
+    public Customer createCustomer(final String fn, final String ln) {
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update( new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement( "INSERT INTO customer( first_name, last_name) VALUES ( ? , ? )" );
-                ps.setString(1, fn);
-                ps.setString(2,ln);
-                return ps;
-            }
-        }, holder)   ;
+        PreparedStatementCreatorFactory preparedStatementCreatorFactory = new PreparedStatementCreatorFactory(
+            "INSERT INTO customer( first_name, last_name) VALUES ( ? , ? )", new int[]{Types.VARCHAR,Types.VARCHAR});
+        preparedStatementCreatorFactory.setReturnGeneratedKeys(true);
+        preparedStatementCreatorFactory.setGeneratedKeysColumnNames(new String[]{"id"});
 
-        Number id = holder.getKey() ;
-        return this.getCustomerById( id.longValue() );
+        jdbcTemplate.update( preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(fn,ln)),holder );
+
+        Number id = holder.getKey();
+
+        return this.getCustomerById(id.longValue());
     }
 
 
@@ -52,7 +57,7 @@ public class JdbcDatabaseCustomerService implements CustomerService {
      * the {@link RowMapper} that handles building {@link Customer} objects
      */
     private RowMapper<Customer> customerRowMapper = new RowMapper<Customer>() {
-        @Override
+
         public Customer mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getInt("id");
             String firstName = resultSet.getString("first_name");

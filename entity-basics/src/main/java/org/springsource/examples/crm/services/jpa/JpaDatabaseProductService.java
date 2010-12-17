@@ -1,6 +1,7 @@
-package org.springsource.examples.crm.services;
+package org.springsource.examples.crm.services.jpa;
 
 import org.springsource.examples.crm.model.Product;
+import org.springsource.examples.crm.services.ProductService;
 
 /**
  *

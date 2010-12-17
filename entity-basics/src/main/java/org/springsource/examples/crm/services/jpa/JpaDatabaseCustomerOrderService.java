@@ -1,6 +1,7 @@
-package org.springsource.examples.crm.services;
+package org.springsource.examples.crm.services.jpa;
 
 import org.springsource.examples.crm.model.Purchase;
+import org.springsource.examples.crm.services.CustomerOrderService;
 
 public class JpaDatabaseCustomerOrderService implements CustomerOrderService {
     @Override

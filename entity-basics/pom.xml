@@ -8,13 +8,30 @@
 
     <properties>
 
-        <org.springframework-version>3.0.5.BUILD-SNAPSHOT</org.springframework-version>
+        <org.springframework-version>3.0.5.RELEASE</org.springframework-version>
         <org.springframework.security-version>3.0.3.RELEASE</org.springframework.security-version>
         <org.aspectj-version>1.6.9</org.aspectj-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
         <!-- Spring -->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.2.132</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -104,14 +121,14 @@
             <scope>runtime</scope>
         </dependency>
 
- <!--       &lt;!&ndash; Database &ndash;&gt;
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.2.131</version>
-            <scope>runtime</scope>
-        </dependency>
- -->
+        <!--       &lt;!&ndash; Database &ndash;&gt;
+               <dependency>
+                   <groupId>com.h2database</groupId>
+                   <artifactId>h2</artifactId>
+                   <version>1.2.131</version>
+                   <scope>runtime</scope>
+               </dependency>
+        -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
