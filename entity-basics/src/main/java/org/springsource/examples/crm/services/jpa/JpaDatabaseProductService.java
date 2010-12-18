@@ -10,7 +10,7 @@ import org.springsource.examples.crm.services.ProductService;
 @Service
 public class JpaDatabaseProductService implements ProductService {
 
-    @Autowired private JpaTemplate jpaTemplate;
+    private JpaTemplate jpaTemplate;
 
     public Product getProductById(long id) {
         return this.jpaTemplate.find(Product.class, id);
@@ -25,5 +25,10 @@ public class JpaDatabaseProductService implements ProductService {
         this.jpaTemplate.persist(product);
         this.jpaTemplate.refresh(product);
         return product;
+    }
+
+    @Autowired
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        this.jpaTemplate = jpaTemplate;
     }
 }

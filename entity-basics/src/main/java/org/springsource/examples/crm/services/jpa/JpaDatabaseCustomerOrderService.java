@@ -19,11 +19,11 @@ import java.util.Set;
 @Service
 public class JpaDatabaseCustomerOrderService implements CustomerOrderService {
 
-    @Autowired private JpaTemplate jpaTemplate;
+    private JpaTemplate jpaTemplate;
 
-    @Autowired private CustomerService customerService;
+    private CustomerService customerService;
 
-    @Autowired private ProductService productService;
+    private ProductService productService;
 
     @Transactional
     public Purchase createPurchase(long customerId) {
@@ -65,5 +65,20 @@ public class JpaDatabaseCustomerOrderService implements CustomerOrderService {
     @PostConstruct
     public void setup() throws Throwable {
         Assert.notNull(this.customerService, "'customerService' instance can't be null");
+    }
+
+    @Autowired
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        this.jpaTemplate = jpaTemplate;
+    }
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 }

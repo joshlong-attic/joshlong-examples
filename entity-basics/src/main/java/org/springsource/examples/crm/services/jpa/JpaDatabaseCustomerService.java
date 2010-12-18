@@ -10,7 +10,7 @@ import org.springsource.examples.crm.services.CustomerService;
 @Service
 public class JpaDatabaseCustomerService implements CustomerService {
 
-    @Autowired private JpaTemplate jpaTemplate;
+    private JpaTemplate jpaTemplate;
 
     @Transactional(readOnly = true)
     public Customer getCustomerById(long id) {
@@ -24,5 +24,8 @@ public class JpaDatabaseCustomerService implements CustomerService {
         newCustomer.setLastName(ln);
         this.jpaTemplate.persist(newCustomer);
         return newCustomer;
+    }      @Autowired
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        this.jpaTemplate = jpaTemplate;
     }
 }

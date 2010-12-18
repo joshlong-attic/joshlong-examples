@@ -33,6 +33,10 @@
 			<artifactId>hibernate-cglib-repack</artifactId>
 			<version>2.1_3</version>
 		</dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId><version>2.5</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -146,7 +150,7 @@
         </dependency>
 
         <!-- Logging -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${org.slf4j-version}</version>
@@ -168,7 +172,11 @@
             <version>1.2.16</version>
             <scope>runtime</scope>
         </dependency>
+-->
 
+        <dependency>
+            <groupId>log4j</groupId><artifactId>log4j</artifactId><version>1.2.9</version>
+        </dependency>
         <!--       &lt;!&ndash; Database &ndash;&gt;
                <dependency>
                    <groupId>com.h2database</groupId>
