@@ -44,36 +44,27 @@ public class JdbcTemplateDatabaseCustomerService implements CustomerService, Ini
     @Autowired
     private TransactionTemplate transactionTemplate;
 
-    //  @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Customer getCustomerById(final long id) {
-        return this.transactionTemplate.execute(new TransactionCallback<Customer>() {
-            public Customer doInTransaction(TransactionStatus status) {
-                return jdbcTemplate.queryForObject(customerByIdQuery, customerRowMapper, id);
-            }
-        });
-
+        return jdbcTemplate.queryForObject(customerByIdQuery, customerRowMapper, id);
     }
 
 
-    //  @Transactional
-    public Customer createCustomer( final String firstName, final String lastName) {
-        return this.transactionTemplate.execute(new TransactionCallback<Customer>() {
-            public Customer doInTransaction(TransactionStatus status) {
-                GeneratedKeyHolder holder = new GeneratedKeyHolder();
+    @Transactional
+    public Customer createCustomer(final String firstName, final String lastName) {
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
 
-                PreparedStatementCreatorFactory preparedStatementCreatorFactory =
-                        new PreparedStatementCreatorFactory(insertCustomerQuery, new int[]{Types.VARCHAR, Types.VARCHAR});
-                preparedStatementCreatorFactory.setReturnGeneratedKeys(true);
-                preparedStatementCreatorFactory.setGeneratedKeysColumnNames(new String[]{"id"});
+        PreparedStatementCreatorFactory preparedStatementCreatorFactory =
+                new PreparedStatementCreatorFactory(insertCustomerQuery, new int[]{Types.VARCHAR, Types.VARCHAR});
+        preparedStatementCreatorFactory.setReturnGeneratedKeys(true);
+        preparedStatementCreatorFactory.setGeneratedKeysColumnNames(new String[]{"id"});
 
-                PreparedStatementCreator psc = preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(firstName, lastName));
-                jdbcTemplate.update(psc, holder);
+        PreparedStatementCreator psc = preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(firstName, lastName));
+        jdbcTemplate.update(psc, holder);
 
-                Number id = holder.getKey();
+        Number id = holder.getKey();
 
-                return getCustomerById(id.longValue());
-            }
-        });
+        return getCustomerById(id.longValue());
 
     }
 
