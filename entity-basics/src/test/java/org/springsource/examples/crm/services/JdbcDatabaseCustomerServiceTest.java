@@ -4,16 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springsource.examples.crm.model.Customer;
-
-import javax.annotation.PostConstruct;
 
 import static org.junit.Assert.*;
 
 /**
- * tests {@link org.springsource.examples.crm.services.jdbc.JdbcDatabaseCustomerService}
+ * tests {@link org.springsource.examples.crm.services.jdbc.JdbcTemplateDatabaseCustomerService}
  *
  * @author Josh Long
  */

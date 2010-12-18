@@ -1,17 +1,16 @@
 package org.springsource.examples.crm.services.jpa;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springsource.examples.crm.model.Product;
 import org.springsource.examples.crm.services.ProductService;
 
+@Service
 public class JpaDatabaseProductService implements ProductService {
 
-    private JpaTemplate jpaTemplate;
-
-    public void setJpaTemplate(JpaTemplate jpaTemplate) {
-        this.jpaTemplate = jpaTemplate;
-    }
+    @Autowired private JpaTemplate jpaTemplate;
 
     public Product getProductById(long id) {
         return this.jpaTemplate.find(Product.class, id);

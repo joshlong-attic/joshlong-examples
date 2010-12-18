@@ -13,8 +13,6 @@ public interface CustomerOrderService {
 
     void addProductToPurchase(long purchaseId, long productId);
 
-    void checkout(long purchaseId);
-
     Purchase getPurchaseById(long purchaseId);
 
 }
