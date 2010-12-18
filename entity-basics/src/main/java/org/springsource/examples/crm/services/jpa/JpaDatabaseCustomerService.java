@@ -24,7 +24,9 @@ public class JpaDatabaseCustomerService implements CustomerService {
         newCustomer.setLastName(ln);
         this.jpaTemplate.persist(newCustomer);
         return newCustomer;
-    }      @Autowired
+    }
+
+    @Autowired
     public void setJpaTemplate(JpaTemplate jpaTemplate) {
         this.jpaTemplate = jpaTemplate;
     }
