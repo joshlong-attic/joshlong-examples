@@ -7,6 +7,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springsource.examples.crm.services.config.CrmConfiguration;
+
 import javax.persistence.EntityManagerFactory;
 
 /**
