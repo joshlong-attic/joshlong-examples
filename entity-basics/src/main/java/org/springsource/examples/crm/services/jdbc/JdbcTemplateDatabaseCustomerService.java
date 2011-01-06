@@ -9,15 +9,11 @@ import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
 import org.springsource.examples.crm.model.Customer;
 import org.springsource.examples.crm.services.CustomerService;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -40,9 +36,6 @@ public class JdbcTemplateDatabaseCustomerService implements CustomerService, Ini
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private TransactionTemplate transactionTemplate;
 
     @Transactional(readOnly = true)
     public Customer getCustomerById(final long id) {
