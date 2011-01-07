@@ -10,7 +10,6 @@ import org.springsource.examples.crm.model.Customer;
 import static org.junit.Assert.*;
 
 /**
- * tests {@link org.springsource.examples.crm.services.jdbc.JdbcTemplateDatabaseCustomerService}
  *
  * @author Josh Long
  */
