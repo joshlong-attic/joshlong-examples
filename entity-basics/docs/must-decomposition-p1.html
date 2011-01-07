@@ -1,0 +1,424 @@
+
+<h1>Green Beans: Building a Better Business Service Tier with Spring</h1>
+<p>By Josh Long</p>
+<h2> Digesting the Service Tier Layer Cake </h2>
+<p>All applications stem from a domain model. The term "domain model" describes the nouns in a system – the actors and objects in a system that are important to the problem you're trying to solve. This domain model typically lives in the same tier as the business logic that uses that domain model to solve a problem. Typically, this tier is built in such a way as to not be tied to the concerns of the tier (or tiers) that presents the business logic to a user, the view tier. The business tier is ideally (at a minimum) conceptually independent of the clients that ultimately consume it.
+</p>
+<p>Within the business tier, there are many different ways to partition the code even further. Many of these divisions are driven by design aesthetic, ease of integration or unfortunately - but frequently - artificial concerns born of habit. Business objects are concerned enforcing the correct state of data in a system, and as a tangential consequence must also be concerned with the correct persistence of data into some sort of back end store – commonly a relational database (RDBMS) like PostgreSQL or Oracle. The business tier is the gateway to the state of your data, and it is imperative that it also be concerned with things like multi-threaded client access, and consistency. Systems often leverage transactions in conjunction with a backend database to meet these challenges.
+</p>
+
+<p>The state of the art for building out business objects has advanced in the last decade, and a lot of the perfunctory layers of yesterday's architectures are less important today. 
+Data Access Objects (DAOs) or repositories are used to insulate clients from complex persistence logic. They describe objects that concern themselves specifically with the persistence of data to a backend system. DAOs expose a generic interface for persisting data in terms of objects. Persistence, as you'll see, is not a complicated problem general case anymore, and DAOs often become little more than pass-through objects - an extra layer of unused indirection that buys you little, in practice. </p>
+
+<p>If everything goes to plan, you'll spend most of your time writing business objects, as they are most directly responsible for delivering your business value. A given business object might describe the logic for adding a user to a system, or managing a customer's orders and line items. The business objects also provide – at a minimum – the client-facing API contract for a system. 
+Business objects must be exposed as services for clients to consume them from another host. Spring makes it easy to transparently proxy standard business objects for consumption by clients in a wide variety of protocols, including RMI, and SOAP. To support ease of integration, it may be necessary to provide a different client interface for a service – perhaps something simpler or coarser grained than the business object interface. RESTful services, for example, don't map naturally to business object interfaces, instead exposing an interface in terms of the common verbs of the HTTP specifications (<code>GET</code>, <code>POST</code>, <code>DELETE</code>, <code>PUT</code>, etc.). You have a choice: expose business objects using Spring's transparent proxy support, or build a dedicated service layer that simply delegates to existing business objects. Often, there's no reason to provide a remote interface for a business object at all – clients can simply collocate the business objects in the client virtual machine. In this case, you may as readily call your business objects your services. Broadly, when we talk of a service tier in this post, we refer to the interface consumed by clients – distributed or not.</p>
+<h2>Low Fat Layer Cakes</h2>
+<p>You could easily expend a lot of time and energy writing unnecessary code to support your business logic that isn't specifically concerned with your business requirements. Pragmatically, though, you should write the simplest thing that could possibly work. Don't trouble yourself with persistence-tier concerns and data access objects unless you have to. Persistence problems are known quantity, and should rarely require a separate tier and engineering effort. People often just fold this into the service tier alongside transaction concerns and the business logic.
+Don't leap to distribute your business objects. There was a time when the intent of service distribution was to facilitate the scale out of stateful business objects independently of the clients, or to ease the independent deployment and evolution of backend services. In practice, business objects are normally stateless, and can be collocated with their clients. If clients are homogeneous, and remote access to services becomes a requirement then retroactively and transparently proxying the business objects as a remote service using Spring can be a simple matter of configuration and clients don't need to change. If you know ahead of time that multiple, heterogeneous clients will require access, then care should be taken in designing a proper service tier using a platform standard web services models like SOAP or REST. </p>
+
+<p>For the majority of applications, you will be charged with the design and implementation of business objects, not data access objects, and not service distribution and federation. In this post, we'll explore building business objects using the Spring framework.
+</p>
+<h2>Nouns and Verbs</h2>
+<p>The service tier describes the verbs in a system – they describe behavior critical to the success of your application. A service tier manages application state, state represented by entities, or domain objects. Domain objects are part of a domain model. The domain model is central to many applications. It describes the nouns in a system. Tools like Groovy on Grails and Spring Roo can automatically infer and generate scaffolding for the business layer simply by looking at the domain model. This approach is called model-driven development, and can be a great aid for highly interactive application development. We'll forego the use of those tools here to concentrate specifically on how the design of a service tier is served by the Spring framework. Understanding the building blocks will help you be all the more productive with tools like Spring Roo.
+</p>
+<p>Let's walk through the implementation of a simple customer management service that will handle all concerns related to the proper creation and evolution of <code>Customer</code> data. The customer management service's domain's rules are as follows: </p>
+<OL><li> a person is only a customer if he or she has purchased something from a business. </li><li>
+a person's purchases are called purchases, which have line items. </li><li>
+ line items are a record of a purchased product for a given order. </li></OL>
+ <p>
+This sort of data - linked data with shallow record counts - is a natural fit for a relational database management system (often called an RDBMS). A RDBMS maps a domain model to tables, which in turn have relationships expressed through foreign keys.  
+</p>
+<div>
+<img src="erd.jpg" alt="a visualization of the domain model as database tables." style="clear:both; margin-bottom:10px;"/>
+<div>A visualization of the domain model as database tables.</div>
+ </div>
+<h2>
+Setting up a Database</h2>
+
+<p>For expedience, our implementation will store all data in a RDBMS called H2. H2 is a lightweight, embedded in-memory SQL database that can be setup and run quickly. To get started, download the latest distribution from the <a href="http://www.h2database.com">H2 homepage</a>. Choose which ever distribution (Windows, or "All Platforms") you like, though for the purposes of this article we'll go with the "All Platforms" distribution. Unzip the distribution in a folder of your liking. On the command line, navigate to the bin folder in the distribution and run the shell script appropriate to your platform (h2.bat for Windows, or h2.sh for Unix or Linux environments) to start the database process and launch a shell you can use to interact with the database.  Enter the following for the "JDBC URL:" field: <code>jdbc:h2:tcp://127.0.0.1/~/crm_example</code> (without the quotes), leave the rest unchanged, and click on the "Connect" button.  Bring up the database console by opening the URL <code>http://localhost:8082/login.jsp</code> in a browser.
+</p>
+<h2>The Domain Model </h2>
+<p>Ideally, code to describe your domain model should be as free of persistence concerns as possible. Ideally, you'll be able to describe your domain model in clean, object-oriented terms.  The code for our domain model is:
+</p>
+<pre>
+package org.springsource.examples.crm.model;
+…
+public class Customer implements java.io.Serializable {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private Set<Purchase> purchases = new HashSet<Purchase>();
+    // constructors, and accessor / mutator pairs omitted for brevity
+}
+</pre>
+<p>Customer entities have references to <code>Purchase</code>s, which are defined as:</p>
+<pre>
+package org.springsource.examples.crm.model;
+…
+public class Purchase implements java.io.Serializable {
+    private Long id;
+    private Customer customer;
+    private double total;
+    private Set<LineItem> lineItems = new HashSet<LineItem>();
+    // constructors, and accessor / mutator pairs omitted for brevity
+}
+</pre>
+<p>A Purchase in turn has a reference to a collection of <code>LineItems</code>, which are defined as:
+</p>
+<pre>package org.springsource.examples.crm.model;
+…
+public class LineItem implements java.io.Serializable {
+    private Long id;
+    private Purchase purchase;
+    private Product product;
+    // constructors, and accessor / mutator pairs omitted for brevity
+}
+</pre>
+Finally, a <code>LineItem</code> references a <code>Product</code>. A <code>Product</code> is a definition of something in the inventory, defined as follows:
+<pre>
+package org.springsource.examples.crm.model;
+…
+
+public class Product implements java.io.Serializable {
+    private Long id;
+    private String description;
+    private String name;
+    private double price;
+    private Set<LineItem> lineItems = new HashSet<LineItem>();
+    // constructors, and accessor / mutator pairs omitted for brevity
+}</pre>
+
+<h2>The Customer Service </h2>
+<p>Let's build a simple service to handle persisting and manipulating Customer records. We'll ignore, for now, the other entities in the domain model. The service's interface will have methods to create a customer entity, and to retrieve one by its ID.</p>
+
+<pre>package org.springsource.examples.crm.services;
+import org.springsource.examples.crm.model.Customer;
+
+public interface CustomerService {
+    Customer getCustomerById(long id);
+    Customer createCustomer(String fn, String ln);
+}</pre>
+
+<h2>Planning our Approach</h2>
+<p>JDBC (the Java Database Connectivity API) is the standard database connectivity framework provided as part of the Java platform. Its use is well documented, and all major vendors provide connectivity for their database in terms of a JDBC driver. This makes JDBC a natural place to start an implementation. In practice, however, a straight implementation is rarely simple.
+Care should be taken to ensure the correct behavior for error recovery with the underlying database: uncommitted transactions need to be rolled back, connection references and pointers need to be closed, etc. Ensure that access to our service class is thread safe. In JDBC, a <code>javax.sql.DataSource</code> is used to connect a client to a database. A <coe>javax.sql.DataSource</code> can in turn create a <code>javax.sql.Connection</code> instance. One way of achieving thread safety is to make a service stateless, but a <code>javax.sql.Connection</code> instance is necessarily stateful, and this is where complications arise. Thread safety has implications for the JDBC code. During a transaction, changes made to the database during the transaction will be "visible" to the connection that started it, but not to other connection instances. This is the Java client manifestation of the consistency guarantees made by a database system itself. A database supports various levels of consistency of data during a transaction. This implies that <code>DataSource</code> access should be reentrant: subsequent access by the same thread should result in the same connection instance. A successful implementation should guarantee that all code invoked for a given client thread uses the same connection. This has another consequence: if a method A calls a method B, and method B reuses the same connection instance as method A, then method B can't close the connection because it would destroy the connection method A was using. Care must be made to ensure resources are properly disposed of. This looks like this:
+</p>
+<pre>
+// no connection
+<b>enter methodA() </b> // acquires or creates connection
+	// methodA() calls methodB()
+<b>	enter methodB() </b>  // reuses connection (does NOT create it)
+<b>	exit methodB()  </b>// do not dispose of connection as it is still being used by methodA()
+<b>exit methodA() </b> // closes and returns connection (typically, this returns the connection to the pool)
+// no connection
+</pre>
+
+<p>All these concerns – thread safety, correct connection acquisition and destruction - are cross cutting concerns. They are endemic to all data access logic. Strip away these admittedly complex concerns and an implementation must still contend with the straight JDBC API to meet the requirements of the interface. </p>
+<h2>Common Configuration </h2>
+<p>We omit the single Spring XML file (it's in the attached source code) as it only introduces classpath component scanning and uses a <context:property-placeholder /> element to import property file definitions from the <code>database.properties</code> file on the classpath. The base Java configuration class which all examples will extend is as follows. </p>
+
+<pre>package org.springsource.examples.crm.services.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import javax.sql.DataSource;
+
+@Configuration
+public class CrmConfiguration {
+    @Value("${dataSource.driverClassName}")    
+    private String driverName;
+    
+    @Value("${dataSource.url}")    
+    private String url;
+    
+    @Value("${dataSource.user}")     
+    private String user;
+    
+    @Value("${dataSource.password}")     
+    private String password;
+
+    @Bean
+    public DataSource dataSource() {
+        SimpleDriverDataSource simpleDriverDataSource = new SimpleDriverDataSource();
+        simpleDriverDataSource.setPassword(this.password);
+        simpleDriverDataSource.setUrl(this.url);
+        simpleDriverDataSource.setUsername(this.user);
+        simpleDriverDataSource.setDriverClass(org.h2.Driver.class);
+        return simpleDriverDataSource;
+    }
+}
+</pre>
+
+<h2>A Raw JDBC Implementation</h2>
+<p>A raw JDBC implementation would need to address all of the concerns enumerated and would be unnecessarily complicated. I don't expect you to take my word for it – consult the attached source code and look at the class <code>RawJdbcDatabaseCustomerService</code>. It is 184 lines long and dizzyingly complex. I'll spare you the actual implementation here, but suffice it to say that there are maybe 10 lines of interesting business logic. The balance of the code serves the other concerns, like thread safety, and transaction management. Each method in the class delegates connection acquisition and destruction to a method that stores a thread local reference to the connection. This lets us correctly acquire or destroy connections, even in the  nested method call case. 
+It works, but it's far from elegant. At every turn we're confronted with error handling logic. While we have extracted the steps for connection management, we still must correctly intersperse the calls at the top and bottom of all methods.
+</p><h2>Introducing Spring's JDBC Support </h2>
+<p>An ideal solution would insulate us from the resource management, and greatly simplify working with the JDBC API. The first part of this solution is the Spring <code>JdbcTemplate</code> class. The <code>JdbcTemplate</code> makes most of the previous code irrelevant by providing methods that take callback APIs. You write the logic specific to your requirement, and the template class will ensure that the other concerns are neatly handled for you.
+</p>
+
+<p>Below is the configuration for a <code>JdbcTemplate</code> based implementation of the <code>CustomerService</code> interface. In the configuration, we define an instance of the  <code>JdbcTemplate</code>.</p>
+
+<pre>
+package org.springsource.examples.crm.services.jdbc;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springsource.examples.crm.services.config.CrmConfiguration;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class JdbcConfiguration extends CrmConfiguration {
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        DataSource ds = dataSource(); // this comes from the parent class 
+        return new JdbcTemplate(ds);
+    }
+}
+</pre>
+
+<p>Below is the <code>JdbcTemplate</code> based <code>CustomerService </code> implementation. </p>
+<pre>
+package org.springsource.examples.crm.services.jdbc;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springsource.examples.crm.model.Customer;
+import org.springsource.examples.crm.services.CustomerService;
+
+import java.sql.*;
+import java.util.Arrays;
+
+@Service
+public class JdbcTemplateDatabaseCustomerService implements CustomerService, InitializingBean {
+
+  @Autowired private JdbcTemplate jdbcTemplate;
+
+   private RowMapper<Customer> customerRowMapper = new RowMapper<Customer>() {
+        public Customer mapRow(ResultSet resultSet, int i) throws SQLException {
+            long id = resultSet.getInt("id");
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+            return new Customer(id, firstName, lastName);
+        }
+    };
+
+    public Customer getCustomerById(long id) {
+        return jdbcTemplate.queryForObject( 
+            " SELECT * FROM customer WHERE id = ?  ", this.customerRowMapper, id);
+    }
+
+    public Customer createCustomer(String firstName, String lastName) {
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
+        PreparedStatementCreatorFactory preparedStatementCreatorFactory =
+                new PreparedStatementCreatorFactory(" INSERT INTO CUSTOMER(FIRST_NAME, LAST_NAME) VALUES( ? , ? ) ", new int[]{Types.VARCHAR, Types.VARCHAR});
+        preparedStatementCreatorFactory.setReturnGeneratedKeys(true);
+        preparedStatementCreatorFactory.setGeneratedKeysColumnNames(new String[]{"id"}); 
+        jdbcTemplate.update(preparedStatementCreatorFactory.newPreparedStatementCreator(Arrays.asList(firstName, lastName)), holder);
+        return getCustomerById( holder.getKey().longValue() );
+    }
+ }</pre>
+
+<p>The first method – <code>getCustomerById(long)</code> –  uses the <code>jdbcTemplate </code> instance to issue a query. The method takes as its first parameter a SQL statement, and takes as its second parameter an instance of <code>RowMapper&lt;T&gt;</code>. RowMapper is a Spring interface that clients can implement to handle mapping result set data into objects (in this case, instances of <code>Customer</code>). For each row in the returned result set, the <code>JdbcTemplate</code> will call <code> mapRow(ResultSet,int)</code>.  
+The RowMapper<T> instance is stateless (and thread safe), and should be cached for any other queries that want to map Customer records. After the SQL string and the RowMapper<T> instance, the <code>jdbcTemplate.queryForObject</code> method supports Java 5's varargs syntax for parameters to be bound to the query in numerical order: the first variable argument is bound to the first "?" in the query, the second to the second "?", etc.</p>
+<p>The second method inserts a record (simple) and then retrieves the ID of the freshly inserted record (so that it may be used to retrieve the newly inserted record by ID, using the first method in the interface – <code>getCustomerById(long))</code>. The <code>javax.sql.PreparedStatement</code> used to execute the query needs to be tailored to support retrieving the last inserted ID. Spring provides a variation of the <code>JdbcTemplate.update()</code> method that accepts a <code>PreparedStatementCreator</code> and a <code>KeyHolder</code> object. <code>PreparedStatementCreator</code> is another strategy interface that tailors the creation of the PreparedStatement. The second parameter, of type KeyHolder, will store the generated key(s) and make them available to the client after the update method has finished execution. 
+ To simplify things even further, Spring provides a <code>PreparedStatementCreatorFactory</code> which can be used to factory most common <code>PreparedStatementCreators</code>.  
+</p><h2>Transactions</h2><p>
+The code as it stands is a marked improvement, but there's still no accounting for transactions. The implementation does not correctly propagate transactions across multiple invocations of the <code>JdbcTemplate</code> instance for a single client thread. </p>
+<p>
+A common requirement is that any single failed action in a block of actions should cause all actions to fail and revert to the known state before the actions failed. Individual actions – perhaps a query and update - translate into individual <code>jdbcTemplate</code> calls, and without a <code>PlatformTransactionManager </code> configured there is no overarching transaction coordination ensuring that all or none of the actions succeed. 
+The Spring framework offers the <code>TransactionTemplate </code> to provide transaction synchronization. <code>TransactionTemplate </code> requires a reference to Spring's <code>PlatformTransactionManager </code> interface, which is at the root of a deep hierarchy of implementations that work with different transactional resources. As this service only works with one transactional resource - a <code>javax.sql.DataSource </code> - a <code>DataSourceTransactionManager</code> will provide everything required. The updated configuration is below:
+</p>
+<pre>
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+        dataSourceTransactionManager.setDataSource(this.dataSource());
+        return dataSourceTransactionManager;
+    }
+
+    @Bean
+    public TransactionTemplate transactionTemplate() {
+        TransactionTemplate tt = new TransactionTemplate();
+        tt.setTransactionManager( this.transactionManager() );
+        return tt;
+    }
+</pre>
+<p>
+Use the transaction template to surround logic that should be enclosed in a transaction. The salient parts of the code are changed as follows:
+</p>
+<pre>
+    @Autowired private TransactionTemplate transactionTemplate; 
+
+     public Customer getCustomerById(final long id) {
+        return this.transactionTemplate.execute(new TransactionCallback<Customer>() {
+            public Customer doInTransaction(TransactionStatus status) {
+               // … all the same business logic as before
+            }
+        });
+    }
+
+    public Customer createCustomer( final String firstName, final String lastName) {
+        return this.transactionTemplate.execute(new TransactionCallback<Customer>() {
+            public Customer doInTransaction(TransactionStatus status) {
+               // … all the same business logic as before
+            }
+        });
+    }
+</pre>
+
+<p>And voil&agrave;! <code>JdbcTemplate</code> makes dealing with JDBC dead simple, and <code>TransactionTemplate</code> makes transaction management a breeze. This implementation is markedly simpler than the previous, raw iteration, but we can do better. </p>
+<p>A lot of the evolution of the code has been to remove cross-cutting concerns from our code. Where possible, Spring provides simpler abstractions on top of   APIs (like JDBC). Spring also supports introducing functionality where useful behavior can be systematically applied using Aspect Oriented Programming (AOP). 
+ In the previous example, it is clear that the <code>transactionTemplate </code> was just wrapping the execution of the methods themselves - not any single part of the method's execution - inside  a transaction context. When a method execution began, a transaction was created or reused. When a method execution finished, the transaction was committed if it was not a nested transaction. Any problem that can be described in terms of method execution boundaries might be well served by AOP. Naturally, Spring ships with out-of-the-box AOP-based transaction support.  
+To enable Spring's transaction support, add this to your Spring configuration file: 
+</p>    
+<pre>	&lt;tx:annotation-driven transaction-manager = "transactionManager" /&gt;</pre>
+<p>
+This <code>&lt;tx:annotation-driven/&gt;</code> references the <code>transactionManager</code> bean configured in the Java configuration. The declaration switches on functionality in the Spring framework that detects the presence of Spring's <code>@Transactional </code> annotations on methods in your beans. The <code>transactionTemplate </code> references become irrelevant, and can be removed in both the configuration class as well as the implementation. All that remains is to add <code>@Transactional </code>
+to the method definitions.  
+</p><p>
+The <code>@Transactional</code> annotation can be parameterized to customize transactional behavior. The <code>getCustomerById</code> method is annotated as <code>@Transaction(readOnly = true)</code> because the method doesn't modify anything in the database in that method. Setting it as <code>readOnly</code> simply tells the Spring framework not to bother creating a transaction. Transactions aren't always cheap to create and should be used with care. For more on tranaction support in the Spring framework, readers are encouraged to check out Juergen Hoeller's (very cool) <a href="http://www.infoq.com/presentations/transaction-management-strategies">recorded presentation on transactions</a>. The revised implementation looks like this:</p>
+
+<pre>    @Transactional(readOnly = true)
+    public Customer getCustomerById(final long id) {
+	// … same as before, with transactionTemplate removed
+    }
+
+    @Transactional
+    public Customer createCustomer(final String firstName, final String lastName) {
+	// … same as before, with transactionTemplate removed
+    }
+</pre>
+
+<h2>Committing to a Relationship (using the Java Persistence API)</h2>
+<p>We're back where we started - we have a complete, working <code>CustomerService </code> interface using Spring's support for JDBC and transactions. Everything that could be done to let us talk cleanly to a data store in terms of our domain model, using JDBC, has been done.  These examples are mercifully simple because, so far, what we're trying to do is simple. We're working with one type of object – a Customer – and haven't started writing the code to handle relationships such as a Customer's purchases. Recall that purchases have line items, and line items reference products. This object graph could be very deep, even in our simple domain. While it is certainly possible to deal with our database tables in terms of objects, it's not natural. This schism between the model that the database imposes – of rows, columns and foreign keys – and the model of our domain is called the object-relational impedance mismatch, and is very common to all object oriented languages, not just Java. The Java Persistence API (JPA), standardizes object-relational mapping technology (an ORM). ORMs typically take a mapping between object types and database tables and provide a clean way to persist, manipulate, and query the objects based on this mapping. In JPA, this mapping is mostly driven from metadata annotations on the domain classes themselves. JPA implementations typically support multiple database vendors. To begin with JPA you should have both chosen a database (the previous examples already established the H2 database), and a JPA implementation. There are many different JPA providers. Many of the JPA providers are packaged with other ORM solutions that predate the standard. </p>
+<p>Let's revise our first example to use JPA. First modify the Customer class to contain the correct metadata for the JPA engine. The metadata is derived using defaults and, where explicit configuration is required, using Java language annotations. I've omitted the mutators in the following code.
+</p>
+<pre>package org.springsource.examples.crm.model;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "customer")
+public class Customer implements java.io.Serializable {
+    // private variables and mutators omitted
+    @Id
+    @GeneratedValue
+    @Column(name = "id", unique = true, nullable = false)
+    public Long getId() {
+        return this.id;
+    }
+
+    @Column(name = "first_name", nullable = false)
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    @Column(name = "last_name", nullable = false)
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
+    public Set<Purchase> getPurchases() {
+        return this.purchases;
+    }
+}
+</pre>
+<p>Classes annotated with <code>@Entity</code> are registered with JPA implementation. As our <code>CustomerService</code> implementation works with a pre-existing database schema, add the <code>@Table</code> annotation and specify to which table in particular to map this class. Next, specify which field maps to the table's primary key using the <code>@Id </code>annotation. The <code>@GeneratedValue </code> annotation tells JPA to expect that this column will  be automatically incremented (or generated) by the database system. The <code>@Column </code> annotation is redundant in this class, as the JPA engine will automatically infer column names from JavaBean-style properties on a class, but can be used to control how a JavaBean property maps to a column name in a table if there's a mismatch. 
+The annotation on the mutator for the purchases collection is the most important because it describes a relationship. The annotation - <code>@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")</code>  -  is a bit dense, but packs a lot of punch! This annotation tells the JPA engine that there are zero or more Purchase objects that belong to this <code>Customer</code> object. The JPA engine knows that all Purchase objects that have a <code>"customer" </code> property (of type <code>Customer</code>) with the same ID as the current one belonging to this customer. Those purchase objects – in database parlance – have foreign keys that reference this customer record, and this is expressed by <code>mappedBy = "customer."</code> So, the Customer class has a JavaBean property (a collection) for purchases, and Purchase has a JavaBean property for a <code>Customer</code>. The reciprocal mapping is excerpted from the Purchase class below:</p>
+
+<pre>    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
+    public Customer getCustomer() {
+        return this.customer;
+    }
+</pre><p>
+The JPA engine knows the <code> Customer </code> object on the Purchase is arrived at by looking at the <code>PURCHASE </code> table's <code>CUSTOMER_ID</code> column, and then loading a <code>Customer</code> instance. 
+Let's revisit the <code>CustomerService</code> implementation and see how it might be improved over the <code>JdbcTemplate</code>-based implementation.  
+First, the configuration: </p>
+
+<PRE>package org.springsource.examples.crm.services.jpa;
+
+import org.springframework.context.annotation.*;
+import org.springframework.orm.jpa.*;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springsource.examples.crm.services.config.CrmConfiguration;
+import javax.persistence.EntityManagerFactory;
+
+@Configuration
+public class JpaConfiguration extends CrmConfiguration {
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        localContainerEntityManagerFactoryBean.setDataSource(this.dataSource());
+        return localContainerEntityManagerFactoryBean;
+    }
+
+    @Bean
+    public JpaTemplate jpaTemplate() {
+        EntityManagerFactory entityManagerFactory = entityManagerFactory().getObject();
+        return new JpaTemplate(entityManagerFactory);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        EntityManagerFactory entityManagerFactory = entityManagerFactory().getObject();
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}</PRE>
+
+<p>The <code>PlatformTransactionManager</code> implementation is a <code>JpaTransactionManager</code>, which is a <code>PlatformTransactionManager</code> implementation that knows how to manage JPA-local transactions. The <code>LocalContainerEntityManagerFactoryBean </code> factories implementations of <code>javax.persistence.EntityManagerFactory</code>, a JPA class that can be used to create instances of a <code>javax.persistence.EntityManager</code>, the central API for interacting with a datasource in terms of the JPA API. This API is key to everything you're likely to do with JPA, but it is not nearly as simple as it could be. To codify common use cases, the Spring framework provides the <code>JpaTemplate</code>, which provides the same level of abstraction and conciseness for JPA that <code>JdbcTemplate</code> provides for JDBC. 
+Below is the code for the JPA-based CustomerService implementation. </p>
+<pre>
+package org.springsource.examples.crm.services.jpa;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springsource.examples.crm.model.Customer;
+import org.springsource.examples.crm.services.CustomerService;
+
+@Service
+public class JpaDatabaseCustomerService implements CustomerService {
+
+    @Autowired
+    private JpaTemplate jpaTemplate;
+
+    @Transactional(readOnly = true)
+    public Customer getCustomerById(long id) {
+        return this.jpaTemplate.find(Customer.class, id);
+    }
+
+    @Transactional
+    public Customer createCustomer(String fn, String ln) {
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName(fn);
+        newCustomer.setLastName(ln);
+        this.jpaTemplate.persist(newCustomer);
+        return newCustomer;
+    }
+}
+</pre>
+
+<p>Not bad! Our 150+ lines service implementation has become the fleeting specimen you see before you. There are as many import statements as actual lines of method bodies!  Once the peripheral concerns are gone, JPA itself goes a long way to let you solve your problem in terms of the objects in your domain. Gone is the logic for explicitly mapping records to objects, and so too is gone the logic for retrieving the last generated ID, managing thread safety and resource acquisition and destruction. 
+</p> 
+<p>In this post, we've explored some of the more common options that confront a wayward developer.  We used Spring to be as productive as possible and - armed with the knowledge of all the things that Spring can simplify for us - we arrived here, at a <em>very</em> simple, final implementation.
+</p><p>
+There are numerous other data persistence options for which the Spring framework provides similar support. Those options all follow the same general template as the support established in this post, so they will come easily. This post doesn't cover  the Spring support available for many of the other ORM solutions (like Hibernate, JDO, TopLink, etc.),  nor does the post  address the wide world of NoSQL support provided by the Spring Data project. The examples in this post were progressively simpler, and depended more on conventions over configuration. As the examples moved up the abstraction stack, there was always a way to tap the full power of the underlying API. 
+ 
+</p>
