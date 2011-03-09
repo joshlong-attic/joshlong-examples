@@ -45,12 +45,33 @@
             <version>${org.springframework-version}</version>
         </dependency>
         <dependency>
+            <groupId>commons-pool</groupId><artifactId>commons-pool</artifactId><version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId><artifactId>commons-dbcp</artifactId><version>1.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.0.0.M2</version>
 
+        </dependency>
 
+         <dependency>
+	      <groupId>redis.clients</groupId>
+	      <artifactId>jedis</artifactId>
+	      <version>1.5.2</version>
+	    </dependency>
+      <!--      <dependency>
+	      <groupId>redis.clients</groupId>
+	      <artifactId>jedis</artifactId>
+	      <version>1.5.2</version>
+	    </dependency>-->
         <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -71,7 +92,9 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>cglib</groupId><artifactId>cglib-nodep</artifactId><version>2.2</version>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -140,7 +163,19 @@
 
     </dependencies>
     <repositories>
-
+        <repository>
+      <id>oss-snapshots</id>
+      <name>OSS Snapshots</name>
+      <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
+      <snapshots>
+         <enabled>true</enabled>
+      </snapshots>
+   </repository>
+        <repository>
+            <id>spring-maven-milestone</id>
+            <name>Springframework Maven Repository</name>
+            <url>http://maven.springframework.org/milestone</url>
+        </repository>
     </repositories>
     <build>
         <plugins>
