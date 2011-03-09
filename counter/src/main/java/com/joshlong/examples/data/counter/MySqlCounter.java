@@ -24,16 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class MySqlCounter implements Counter {
 
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	private String upsert = " INSERT INTO `counter` ( `name`, `val`) VALUES (?,?) ON DUPLICATE KEY UPDATE `val` = `val` + ? ";
 
 	private String fetch = " SELECT `val` FROM `counter` WHERE `name` = ? ";
-
-	@Autowired
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
 
 	@Override
 	@Transactional
